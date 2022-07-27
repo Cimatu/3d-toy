@@ -17,6 +17,9 @@ class Spoiler{
     @Column({ unique: true })
     name: string;
 
+    @Column({default: 'spoiler'})
+    type: string
+
     @ManyToMany(() => Car, (cars) => cars.spoilers)
     cars: Car[];
 }

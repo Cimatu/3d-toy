@@ -9,4 +9,7 @@ export class CreateDetailDto {
 
     @ApiProperty({example: 'Prime', description: 'Unique name of detail'})
     name: string;
+
+    @ApiProperty({example: 'spoiler', description: 'Type of detail'})
+    type: string   
 }

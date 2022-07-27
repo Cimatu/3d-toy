@@ -30,7 +30,4 @@ export class WheelsController {
     getByValue(@Param('name') name: string) {
         return this.wheelsService.getWheelByName(name);
     }
-
-
-    
 }

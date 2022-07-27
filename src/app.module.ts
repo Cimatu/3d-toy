@@ -10,6 +10,8 @@ import WheelsModule from './cars/details/wheels/wheels.module';
 import SpoilersModule from './cars/details/spoilers/spoilers.module';
 import ToningsModule from './cars/details/tonings/tonings.module';
 import BodiesModule from './cars/details/bodies/bodies.module';
+import { Cart } from './carts/carts.entity';
+import { CartsModule } from './carts/carts.module';
 
 @Module({
   controllers: [],
@@ -25,11 +27,12 @@ import BodiesModule from './cars/details/bodies/bodies.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Car, Wheel, Spoiler, Toning, CarBody],
+      entities: [User, Car, Cart, Wheel, Spoiler, Toning, CarBody],
       synchronize: true,
     }),
     UsersModule,
     CarsModule,
+    CartsModule,
     WheelsModule,
     SpoilersModule,
     ToningsModule,

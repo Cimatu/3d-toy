@@ -17,6 +17,9 @@ class Toning{
     @Column({ unique: true })
     name: string;
 
+    @Column({default: 'toning'})
+    type: string
+
     @ManyToMany(() => Car, (cars) => cars.tonings)
     cars: Car[];
 }

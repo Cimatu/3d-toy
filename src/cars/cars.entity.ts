@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Cart } from "src/carts/carts.entity";
 import { User } from "src/users/users.entity";
-import { Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { CarBody, Spoiler, Toning, Wheel } from "./details";
 
 
@@ -10,7 +11,7 @@ export class Car{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, (user) => user.cars)
+    @ManyToOne(() => User, (user) => user.cars, {onDelete: 'CASCADE'})
     user: User;
 
     @ManyToMany(() => CarBody, (bodies) => bodies.cars)
@@ -28,4 +29,7 @@ export class Car{
     @ManyToMany(() => Wheel, (wheels) => wheels.cars)
     @JoinTable()
     wheels: Wheel[];
+
+    @OneToMany(() => Cart, (cart) => cart.id)
+    cart: Cart
 }

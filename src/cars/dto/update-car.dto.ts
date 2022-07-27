@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateCarDto {
+export class UpdateCarDto {
     @ApiProperty({ example: 10, description: 'Owner Id' })
-    userId: number;
+    carId: number;
 
     details: {
         body?: string;

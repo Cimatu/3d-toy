@@ -21,6 +21,7 @@ export class SpoilersService {
     }
 
     async getSpoilerByName(name: string) {
-        return await this.spoilerRepository.findOneBy({ name });
+        const spoiler = await this.spoilerRepository.findOne({ where: { name } });
+        return spoiler
     }
 }

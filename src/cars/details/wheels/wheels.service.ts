@@ -22,6 +22,10 @@ export class WheelsService {
     }
 
     async getWheelByName(name: string) {
-        return await this.wheelRepository.findOneBy({ name });
+        if (name) {
+            return await this.wheelRepository.findOneBy({ name });
+        } else {
+            return undefined
+        }
     }
 }

@@ -17,6 +17,9 @@ class Wheel {
 
     @Column({ unique: true })
     name: string;
+    
+    @Column({default: 'wheel'})
+    type: string
 
     @ManyToMany(() => Car, (cars) => cars.wheels)
     cars: Car[];
