@@ -31,8 +31,8 @@ export class CarsController {
     @ApiOperation({ summary: 'Find all cars' })
     @ApiResponse({ status: 200, type: [Car] })
     @Get('all_cars')
-    findAllCars(@Body() body: { userId: number }) {
-        return this.carsService.getAllCars(body.userId)
+    findAllCars(@Body() body: { username: string }) {
+        return this.carsService.getAllCars(body.username)
     }
 
     @ApiOperation({ summary: 'Find all cars' })

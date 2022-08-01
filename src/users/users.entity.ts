@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { Role } from "./role.enum";
 
 @Entity('users')
-export class User{
+export class User {
     @ApiProperty({ example: 1, description: 'Unique identificator' })
     @PrimaryGeneratedColumn()
     id: number;
@@ -14,6 +14,7 @@ export class User{
     @Column({ unique: true })
     username: string;
 
+    @ApiProperty({ example: 'user', description: 'User role, default: user' })
     @Column({ type: 'enum', enum: Role, default: Role.USER })
     role: Role;
 
@@ -21,6 +22,8 @@ export class User{
     @JoinColumn()
     cars: Car[];
 
-    @OneToOne(() => Cart, (cart) => cart.id)
+    @ApiProperty({ description: 'Cart entity' })
+    @OneToOne(() => Cart)
+    @JoinColumn()
     cart: Cart
 }

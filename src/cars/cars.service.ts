@@ -29,7 +29,7 @@ export class CarsService {
 
     async createCar(dto: CreateCarDto) {
         const { body, wheel, spoiler, toning } = dto.details;
-        const user = await this.userService.getUserById(dto?.userId);
+        const user = await this.userService.getUserByUsername(dto?.username);
 
         if (!user || !body) {
             return new Error('Choose body')
@@ -111,8 +111,8 @@ export class CarsService {
         }
     }
 
-    async getAllCars(userId: number) {
-        const user = await this.userService.getUserById(userId);
+    async getAllCars(username: string) {
+        const user = await this.userService.getUserByUsername(username);
         if(!user){
             throw new Error("User doesn't exist")
         }

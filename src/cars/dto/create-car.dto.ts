@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateCarDto {
     @ApiProperty({ example: 10, description: 'Owner Id' })
-    userId: number;
+    username: string;
 
     details: {
         body?: string;
