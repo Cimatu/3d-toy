@@ -1,11 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
 import { UsersService } from 'src/users/users.service';
-import { Repository, DataSource } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Car } from './cars.entity';
 import { BodiesService } from './details/bodies/bodies.service';
-import { CreateDetailDto } from './details/dto/create-detail.dto';
 import { SpoilersService } from './details/spoilers/spoilers.service';
 import { ToningsService } from './details/tonings/tonings.service';
 import { WheelsService } from './details/wheels/wheels.service';
@@ -18,7 +16,6 @@ export class CarsService {
     constructor(
         @InjectRepository(Car)
         private readonly carRepository: Repository<Car>,
-        // @Inject(forwardRef(() => UsersService))
         private userService: UsersService,
         private wheelService: WheelsService,
         private bodyService: BodiesService,
@@ -26,13 +23,12 @@ export class CarsService {
         private spoilerService: SpoilersService
     ) { }
 
-
     async createCar(dto: CreateCarDto) {
         const { body, wheel, spoiler, toning } = dto.details;
         const user = await this.userService.getUserByUsername(dto?.username);
 
         if (!user || !body) {
-            return new Error('Choose body')
+            return new NotFoundException('Body or user not found');
         }
 
         const car = new Car();
@@ -44,30 +40,30 @@ export class CarsService {
         }
 
         if (toning) {
-            const tonings = await this.toningService.getToningByName(toning)
-            car.tonings = [tonings]
+            const tonings = await this.toningService.getToningByName(toning);
+            car.tonings = [tonings];
         }
 
         if (spoiler) {
-            const spoilers = await this.spoilerService.getSpoilerByName(spoiler)
-            car.spoilers = [spoilers]
+            const spoilers = await this.spoilerService.getSpoilerByName(spoiler);
+            car.spoilers = [spoilers];
         }
 
         if (wheel) {
-            const wheels = await this.wheelService.getWheelByName(wheel)
-            car.wheels = [wheels]
+            const wheels = await this.wheelService.getWheelByName(wheel);
+            car.wheels = [wheels];
         }
 
-        await this.carRepository.save(car);
-        return car;
+        return await this.carRepository.save(car);
     }
 
     async updateCar(dto: UpdateCarDto) {
         const { body, wheel, spoiler, toning } = dto.details;
+
         const car = await this.getCarById(dto?.carId);
 
         if (!car) {
-            throw new Error("Car doesn't chosen")
+            throw new NotFoundException("Car not found");
         }
 
         if (body) {
@@ -76,47 +72,64 @@ export class CarsService {
         }
 
         if (toning) {
-            const tonings = await this.toningService.getToningByName(toning)
-            car.tonings = [tonings]
+            const tonings = await this.toningService.getToningByName(toning);
+            car.tonings = [tonings];
         }
 
         if (spoiler) {
-            const spoilers = await this.spoilerService.getSpoilerByName(spoiler)
-            car.spoilers = [spoilers]
+            const spoilers = await this.spoilerService.getSpoilerByName(spoiler);
+            car.spoilers = [spoilers];
         }
 
         if (wheel) {
-            const wheels = await this.wheelService.getWheelByName(wheel)
-            car.wheels = [wheels]
+            const wheels = await this.wheelService.getWheelByName(wheel);
+            car.wheels = [wheels];
         }
 
-        await this.carRepository.save(car);
-        return car;
+        return await this.carRepository.save(car) 
     }
 
-    async deleteCar(car_id: number) {
-        console.log(car_id)
-        const car = await this.getCarById(car_id);
+    async deleteCar(id: number) {
+        const car = this.getCarById(id);
         if (!car) {
-            throw new Error("Car doesn't exist")
+            throw new NotFoundException("Car not found");
         }
-        return await this.carRepository.remove(car);
+        return await this.carRepository.delete(id);
     }
 
-    async getCarById(id) {
-        if (id) {
-            return await this.carRepository.findOneBy({ id })
-        } else {
-            return undefined
+    async getCarById(id: number) {
+        const car = await this.carRepository
+            .createQueryBuilder('cars')
+            .leftJoinAndSelect('cars.bodies', 'bodies')
+            .leftJoinAndSelect('cars.spoilers', 'spoilers')
+            .leftJoinAndSelect('cars.tonings', 'tonings')
+            .leftJoinAndSelect('cars.wheels', 'wheels')
+            .leftJoinAndSelect('cars.user', 'user')
+            .where('cars.id = :id', { id })
+            .getOne();
+        if (!car) {
+            throw new NotFoundException("Car not found");
         }
+        return car;
     }
 
     async getAllCars(username: string) {
         const user = await this.userService.getUserByUsername(username);
-        if(!user){
-            throw new Error("User doesn't exist")
+        if (!user) {
+            throw new NotFoundException("User not found");
         }
-        const car = await this.carRepository.find({ where: { user } });
+        const car = await this.carRepository
+            .createQueryBuilder('cars')
+            .leftJoinAndSelect('cars.bodies', 'bodies')
+            .leftJoinAndSelect('cars.spoilers', 'spoilers')
+            .leftJoinAndSelect('cars.tonings', 'tonings')
+            .leftJoinAndSelect('cars.wheels', 'wheels')
+            .leftJoin('cars.user', 'user')
+            .where('user.username = :username', { username })
+            .getMany();
+        if (!car) {
+            throw new NotFoundException("Car not found");
+        }
         return car;
     }
 }

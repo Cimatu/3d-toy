@@ -25,5 +25,5 @@ export class User {
     @ApiProperty({ description: 'Cart entity' })
     @OneToOne(() => Cart)
     @JoinColumn()
-    cart: Cart
+    cart: Cart;
 }

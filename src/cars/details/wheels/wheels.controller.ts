@@ -17,6 +17,14 @@ export class WheelsController {
         return this.wheelsService.createWheel(wheelsDto);
     }
 
+    @ApiOperation({ summary: 'Update wheel' })
+    @ApiResponse({ status: 200, type: Wheel })
+    @Post('update/:id')
+    update(@Param('id') id: number, @Body() wheelsDto: CreateDetailDto) {
+        console.log(id)
+        return this.wheelsService.updateWheel(wheelsDto, id);
+    }
+
     @ApiOperation({ summary: `Get list of all wheels` })
     @ApiResponse({ status: 200, type: [Wheel] })
     @Get('get_all')

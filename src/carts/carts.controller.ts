@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Cart } from './carts.entity';
 import { CartsService } from './carts.service';
@@ -16,14 +16,7 @@ export class CartsController {
         return this.cartService.createCart();
     }
 
-    @ApiOperation({ summary: `Get list of all wheels` })
-    @ApiResponse({ status: 200, type: [Cart] })
-    @Get('get_all')
-    getAll() {
-        return this.cartService.getAllWheels();
-    }
-
-    @ApiOperation({ summary: `Get wheel by name` })
+    @ApiOperation({ summary: 'Get cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
     @Get('/:name')
     getByValue(@Param('name') name: string) {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -21,6 +21,13 @@ export class BodiesService {
     }
 
     async getBodyByName(name: string) {
-        return await this.bodyRepository.findOneBy({ name });
+        const body = await this.bodyRepository
+            .createQueryBuilder('bodies')
+            .where('bodies.name = :name', { name })
+            .getOne();
+        if (!body) {
+            throw new NotFoundException("Toning not found");
+        }
+        return body;
     }
 }

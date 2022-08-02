@@ -24,11 +24,17 @@ export class UsersController {
         return this.usersService.getAllUsers();
     }
 
-
     @ApiOperation({ summary: `Get user by unique username` })
     @ApiResponse({ status: 200, type: User })
     @Get('get_by_username/:username')
     getUserByUsername(@Param('username') username: string) {
         return this.usersService.getUserByUsername(username);
+    }
+
+    @ApiOperation({ summary: `Get user by unique username` })
+    @ApiResponse({ status: 200 })
+    @Get('delete_by_id/:user_id')
+    deleteUserById(@Param('user_id') user_id: number) {
+        return this.usersService.deteteUserById(user_id);
     }
 }

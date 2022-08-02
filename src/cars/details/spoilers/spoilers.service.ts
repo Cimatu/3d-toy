@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -21,7 +21,13 @@ export class SpoilersService {
     }
 
     async getSpoilerByName(name: string) {
-        const spoiler = await this.spoilerRepository.findOne({ where: { name } });
-        return spoiler
+        const spoiler = await this.spoilerRepository
+            .createQueryBuilder('spoilers')
+            .where('spoilers.name = :name', { name })
+            .getOne();
+        if (!spoiler) {
+            throw new NotFoundException("Spoiler not found");
+        }
+        return spoiler;
     }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { chownSync } from 'fs';
 import { Repository } from 'typeorm';
 import { Cart } from './carts.entity';
 
@@ -14,7 +13,7 @@ export class CartsService {
     ) { }
 
     async createCart() {
-        return await this.cartRepository.save({})
+        return await this.cartRepository.save({});
     }
 
     async getAllWheels() {
@@ -25,7 +24,7 @@ export class CartsService {
         if (name) {
             return await this.cartRepository.findOneBy({});
         } else {
-            return undefined
+            return undefined;
         }
     }
 }

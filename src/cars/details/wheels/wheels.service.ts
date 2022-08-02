@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -14,18 +14,62 @@ export class WheelsService {
     ) { }
 
     async createWheel(dto: CreateDetailDto) {
+        const wheel = this.getWheelByName(dto.name);
+        if (wheel) {
+            throw new HttpException('Wheel alredy exist', HttpStatus.FOUND);
+        }
         return await this.wheelRepository.save(dto);
     }
 
+    async updateWheel(dto: CreateDetailDto, id: number) {
+        const findWheel = await this.getWheelByName(dto.name);
+        if (!findWheel) {
+            throw new NotFoundException("Wheel not found");
+        }
+
+        return await this.wheelRepository
+            .createQueryBuilder('wheels')
+            .update(Wheel)
+            .set({ ...dto })
+            .where('wheels.id = :id', { id })
+            .returning('*')
+            .execute()
+            .then((res) => res.raw[0])
+    }
+
     async getAllWheels() {
-        return await this.wheelRepository.find();
+        return await this.wheelRepository
+            .createQueryBuilder('wheels')
+            .getMany();
     }
 
     async getWheelByName(name: string) {
-        if (name) {
-            return await this.wheelRepository.findOneBy({ name });
-        } else {
-            return undefined
+        const wheel = await this.wheelRepository
+            .createQueryBuilder('wheels')
+            .where('wheels.name = :name', { name })
+            .getOne();
+        if (!wheel) {
+            throw new NotFoundException("Wheel not found");
         }
+        return wheel;
+    }
+
+    async getWheelById(id: number) {
+        const wheel = await this.wheelRepository
+            .createQueryBuilder('wheels')
+            .where('wheels.id = :id', { id })
+            .getOne();
+        if (!wheel) {
+            throw new NotFoundException("Wheel not found");
+        }
+        return wheel;
+    }
+
+    async deleteWheel(id: number) {
+        const wheel = this.getWheelById(id);
+        if (!wheel) {
+            throw new NotFoundException("Wheel not found");
+        }
+        return await this.wheelRepository.delete(id);
     }
 }
