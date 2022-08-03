@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -26,7 +26,7 @@ export class SpoilersService {
             .where('spoilers.name = :name', { name })
             .getOne();
         if (!spoiler) {
-            throw new NotFoundException("Spoiler not found");
+            throw new HttpException("Spoiler not found", HttpStatus.NOT_FOUND);
         }
         return spoiler;
     }

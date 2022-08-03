@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -27,7 +27,7 @@ export class ToningsService {
             .where('tonings.name = :name', { name })
             .getOne();
         if (!toning) {
-            throw new NotFoundException("Toning not found");
+            throw new HttpException("Toning not found", HttpStatus.NOT_FOUND);
         }
         return toning;
     }

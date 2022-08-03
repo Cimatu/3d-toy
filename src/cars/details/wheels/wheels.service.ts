@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -24,7 +24,7 @@ export class WheelsService {
     async updateWheel(dto: CreateDetailDto, id: number) {
         const findWheel = await this.getWheelByName(dto.name);
         if (!findWheel) {
-            throw new NotFoundException("Wheel not found");
+            throw new HttpException("Wheel not found", HttpStatus.NOT_FOUND);
         }
 
         return await this.wheelRepository
@@ -49,7 +49,7 @@ export class WheelsService {
             .where('wheels.name = :name', { name })
             .getOne();
         if (!wheel) {
-            throw new NotFoundException("Wheel not found");
+            throw new HttpException("Wheel not found", HttpStatus.NOT_FOUND);
         }
         return wheel;
     }
@@ -60,7 +60,7 @@ export class WheelsService {
             .where('wheels.id = :id', { id })
             .getOne();
         if (!wheel) {
-            throw new NotFoundException("Wheel not found");
+            throw new HttpException("Wheel not found", HttpStatus.NOT_FOUND);
         }
         return wheel;
     }
@@ -68,7 +68,7 @@ export class WheelsService {
     async deleteWheel(id: number) {
         const wheel = this.getWheelById(id);
         if (!wheel) {
-            throw new NotFoundException("Wheel not found");
+            throw new HttpException("Wheel not found", HttpStatus.NOT_FOUND);
         }
         return await this.wheelRepository.delete(id);
     }

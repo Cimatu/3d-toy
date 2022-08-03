@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
@@ -28,7 +28,7 @@ export class CarsService {
         const user = await this.userService.getUserByUsername(dto?.username);
 
         if (!user || !body) {
-            return new NotFoundException('Body or user not found');
+            throw new HttpException("User or body not found", HttpStatus.NOT_FOUND);
         }
 
         const car = new Car();
@@ -63,7 +63,7 @@ export class CarsService {
         const car = await this.getCarById(dto?.carId);
 
         if (!car) {
-            throw new NotFoundException("Car not found");
+            throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
         }
 
         if (body) {
@@ -92,7 +92,7 @@ export class CarsService {
     async deleteCar(id: number) {
         const car = this.getCarById(id);
         if (!car) {
-            throw new NotFoundException("Car not found");
+            throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
         }
         return await this.carRepository.delete(id);
     }
@@ -108,7 +108,7 @@ export class CarsService {
             .where('cars.id = :id', { id })
             .getOne();
         if (!car) {
-            throw new NotFoundException("Car not found");
+            throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
         }
         return car;
     }
@@ -128,7 +128,7 @@ export class CarsService {
             .where('user.username = :username', { username })
             .getMany();
         if (!car) {
-            throw new NotFoundException("Car not found");
+            throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
         }
         return car;
     }

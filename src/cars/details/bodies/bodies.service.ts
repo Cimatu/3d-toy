@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateDetailDto } from '../dto/create-detail.dto';
@@ -26,7 +26,7 @@ export class BodiesService {
             .where('bodies.name = :name', { name })
             .getOne();
         if (!body) {
-            throw new NotFoundException("Toning not found");
+            throw new HttpException("Body not found", HttpStatus.NOT_FOUND);
         }
         return body;
     }

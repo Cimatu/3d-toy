@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartsService } from 'src/carts/carts.service';
 import { Repository } from 'typeorm';
@@ -41,7 +41,7 @@ export class UsersService {
             .leftJoinAndSelect('users.cart', 'user')
             .getMany();
         if (!users) {
-            throw new NotFoundException("User not found");
+            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
         return users;
     }
@@ -53,7 +53,7 @@ export class UsersService {
             .where('users.username = :username', { username })
             .getOne();
         if (!user) {
-            throw new NotFoundException("User not found");
+            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
         return user;
     }
@@ -65,7 +65,7 @@ export class UsersService {
             .where('users.id = :id', { id })
             .getOne();
         if (!user) {
-            throw new NotFoundException("User not found");
+            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
         return user;
     }
@@ -73,7 +73,7 @@ export class UsersService {
     async deteteUserById(id: number) {
         const user = this.getUserById(id);
         if (!user) {
-            throw new NotFoundException("User not found");
+            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
         return await this.userRepository.delete(id);
     }
