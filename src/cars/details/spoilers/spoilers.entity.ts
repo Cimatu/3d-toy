@@ -19,9 +19,6 @@ class Spoiler{
 
     @Column({default: 'spoiler'})
     type: string
-
-    @ManyToMany(() => Car, (cars) => cars.spoilers)
-    cars: Car[];
 }
 
 export default Spoiler

@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Detail } from 'src/cars/details';
 import { Cart } from './carts.entity';
 import { CartsService } from './carts.service';
 
@@ -9,17 +10,31 @@ export class CartsController {
 
     constructor(private cartService: CartsService) { }
 
-    @ApiOperation({ summary: 'Cart creation' })
+    // @ApiOperation({ summary: 'Cart creation' })
+    // @ApiResponse({ status: 200, type: Cart })
+    // @Post('create/:username')
+    // create() {
+    //     return this.cartService.createCart();
+    // }
+
+    @ApiOperation({ summary: 'Get cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
-    @Post('create/:username')
-    create() {
-        return this.cartService.createCart();
+    @Post('update')
+    update(@Body() body: { id: number, array: InterfaceDetail[] }) {
+        return this.cartService.updateCart(body.id, body.array);
     }
 
     @ApiOperation({ summary: 'Get cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
-    @Get('/:name')
-    getByValue(@Param('name') name: string) {
-        return this.cartService.getWheelByName(name);
+    @Delete('delete')
+    delete(@Body() body: { id: number, array: InterfaceDetail[] }) {
+        return this.cartService.deleteFromCart(body.id, body.array);
+    }
+
+    @ApiOperation({ summary: 'Get cart by user id' })
+    @ApiResponse({ status: 200, type: Cart })
+    @Post('get_by_user')
+    getByUser(@Body() body: { id: number, array: InterfaceDetail[] }) {
+        return this.cartService.updateCart(body.id, body.array);
     }
 }

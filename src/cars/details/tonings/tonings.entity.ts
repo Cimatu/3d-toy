@@ -19,9 +19,6 @@ class Toning{
 
     @Column({default: 'toning'})
     type: string
-
-    @ManyToMany(() => Car, (cars) => cars.tonings)
-    cars: Car[];
 }
 
 export default Toning

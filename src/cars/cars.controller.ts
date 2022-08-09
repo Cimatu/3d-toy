@@ -22,7 +22,6 @@ export class CarsController {
     @ApiResponse({ status: 200, type: Car })
     @Post('update')
     update(@Body() dto: UpdateCarDto) {
-        console.log(1)
         return this.carsService.updateCar(dto)
     }
 

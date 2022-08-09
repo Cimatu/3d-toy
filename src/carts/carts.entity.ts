@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Car } from "src/cars/cars.entity";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CartItem } from "./cart-item/cart-item.entity";
+
 
 @Entity('carts')
 export class Cart {
@@ -16,8 +17,8 @@ export class Cart {
     @Column({ default: 0 })
     quantity: number;
 
-    @ApiProperty({ description: 'Array with all cart in the cart' })
-    @OneToMany(() => Car, (car) => car.id)
-    @JoinColumn()
-    cars: Car[];
+    @ApiProperty({ description: 'Array with all details in the cart' })
+    @OneToMany(() => CartItem, cartItem => cartItem.cart)
+    @JoinTable()
+    cartItems: CartItem[];
 }

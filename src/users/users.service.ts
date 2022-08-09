@@ -1,9 +1,9 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CartsService } from 'src/carts/carts.service';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
+import { CartsService } from 'src/carts/carts.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -14,24 +14,24 @@ export class UsersService {
     ) { }
 
     async createUser(dto: CreateUserDto) {
-        const findUser = await this.userRepository
-            .createQueryBuilder('users')
-            .where('users.username = :username', { username: dto.username })
-            .getOne();
-
+        const { username } = dto;
+        const findUser = await this.getUserByUsername(username);
         if (findUser) {
-            throw new NotFoundException("Such username exist");
+            throw new NotFoundException("Such username already exists");
         }
 
+        const user = await this.userRepository.save({ username });
+        if (!user) {
+            throw new NotFoundException("Create user error");
+        }
+        
         const cart = await this.cartService.createCart();
         if (!cart) {
             throw new NotFoundException("Cart wasn't created");
         }
 
-        const user = new User();
-        user.username = dto.username;
         user.cart = cart;
-
+        console.log(user)
         return await this.userRepository.save(user);
     }
 
@@ -52,9 +52,6 @@ export class UsersService {
             .leftJoinAndSelect('users.cart', 'user')
             .where('users.username = :username', { username })
             .getOne();
-        if (!user) {
-            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
-        }
         return user;
     }
 
