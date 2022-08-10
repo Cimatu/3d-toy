@@ -9,16 +9,12 @@ class BallBearingSet extends Detail {
     @Column({ unique: true, default: 'Ball Bearing Set' })
     name: string;
 
+    @ApiProperty({ example: "BallBearingSet", description: 'Car body type' })
+    @Column({ default: "BallBearingSet" })
+    type: string;
+
     @ApiProperty({ example: 'Prime', description: 'Rollers name' })
-    @Column({
-        default:
-            `
-            Used to replace the bearing positions of chassis, 
-            gear and guide wheel 520. After replacement, 
-            the vehicle speed can be increased and the friction 
-            at the contact position when the vehicle rotates can be reduced.
-        `
-    })
+    @Column()
     note: string
 }
 

@@ -25,7 +25,6 @@ export class CarsService {
             throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
 
-
         let checkBody = false;
         for (let i = 0; i < details.length; i++) {
             if (details[i].type === "BodyCar") {

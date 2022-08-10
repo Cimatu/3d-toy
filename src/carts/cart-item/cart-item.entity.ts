@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Detail } from "src/cars/details";
+import { Order } from "src/orders/orders.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Cart } from "../carts.entity";
 
@@ -20,6 +21,10 @@ export class CartItem {
     @ManyToOne(() => Cart, (cart) => cart.cartItems)
     @JoinColumn()
     cart: Cart
+
+    @ManyToOne(() => Order, (order) => order.cartItems, { onDelete: "CASCADE" })
+    @JoinColumn()
+    order: Order
 
     @ApiProperty({ description: 'Array with all details in the cart' })
     @ManyToMany(() => Detail)

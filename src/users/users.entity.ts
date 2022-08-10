@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Car } from "src/cars/cars.entity";
 import { Cart } from "src/carts/carts.entity";
+import { UserData } from "src/events/usersData/usersData.entity";
+import { Order } from "src/orders/orders.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "./role.enum";
 
@@ -26,4 +28,10 @@ export class User {
     @OneToOne(() => Cart)
     @JoinColumn()
     cart: Cart;
+
+    @OneToMany(() => Order, orders => orders.user)
+    orders: Order[];
+
+    @OneToMany(() => UserData, (userData) => userData.user)
+    userData: UserData[];
 }

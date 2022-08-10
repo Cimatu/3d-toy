@@ -17,6 +17,12 @@ import SpoilersModule from './cars/details/spoilers/spoilers.module';
 import ToningsModule from './cars/details/tonings/tonings.module';
 import { CartItem } from './carts/cart-item/cart-item.entity';
 import CartItemModule from './carts/cart-item/cart-item.module';
+import OrdersModule from './orders/orders.module';
+import { Order } from './orders/orders.entity';
+import { Event } from './events/events.entity';
+import { UserData } from './events/usersData/usersData.entity';
+import EventsModule from './events/events.module';
+import UserDataModule from './events/usersData/usersData.module';
 
 @Module({
   controllers: [],
@@ -32,20 +38,24 @@ import CartItemModule from './carts/cart-item/cart-item.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Car, Cart, CartItem, Wheel, Spoiler, Toning, Detail, BallBearingSet, Gear, BodyCar],
+      entities: [User, Car, Cart, CartItem, Order, Wheel, Spoiler, Toning, Detail, BallBearingSet, Gear, BodyCar, Event, UserData],
       synchronize: true,
     }),
     UsersModule,
     CarsModule,
     CartsModule,
     CartItemModule,
+    OrdersModule,
     WheelsModule,
     SpoilersModule,
     ToningsModule,
     DetailsModule,
     BallBearingModule,
     GearsModule,
-    CarBodiesModule
+    CarBodiesModule,
+    EventsModule,
+    UserDataModule
+
   ],
 })
 export class AppModule { }

@@ -4,7 +4,7 @@ import { ChildEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedCol
 import Detail from "../deltails.entity";
 
 @ChildEntity()
-class BodyCar extends Detail{
+class BodyCar extends Detail {
     @ApiProperty({ example: 1, description: 'Car body price' })
     @Column({ default: 0 })
     price: number;
@@ -12,6 +12,10 @@ class BodyCar extends Detail{
     @ApiProperty({ example: 'PINK BOOM', description: 'Unique car body name' })
     @Column({ unique: true })
     name: string;
+
+    @ApiProperty({ example: "BodyCar", description: 'Car body type' })
+    @Column({ default: "BodyCar" })
+    type: string;
 
     @ApiProperty({ example: '570*465*285mm', description: 'Size of car body' })
     @Column({ nullable: true })

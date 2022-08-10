@@ -31,7 +31,6 @@ export class UsersService {
         }
 
         user.cart = cart;
-        console.log(user)
         return await this.userRepository.save(user);
     }
 

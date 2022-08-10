@@ -12,8 +12,9 @@ class Detail {
     @ManyToMany(() => Car, (cars) => cars.details)
     cars: Car[];
 
-    // @OneToMany(() => CartItem, (cartItem) => cartItem.detail)
-    // cartItems: CartItem[]
+    @Column()
+    type: string;
+
 }
 
 export default Detail

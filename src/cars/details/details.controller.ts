@@ -15,15 +15,18 @@ export class DetailsController {
         return this.detailsServie.createDetail();
     }
 
-    getByName(){
-        
-    }
-
     @ApiOperation({ summary: 'Get details catalog ' })
     @ApiResponse({ status: 200 })
     @Get('get_all')
     getAllDetails() {
         return this.detailsServie.getAllDetails()
+    }
+
+    @ApiOperation({ summary: 'Filtered details catalog ' })
+    @ApiResponse({ status: 200 })
+    @Get('filter')
+    filterDetails(@Body() body: { types: string[] }) {
+        return this.detailsServie.filterDetails(body.types);
     }
 }
 

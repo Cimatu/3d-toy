@@ -1,10 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Detail } from 'src/cars/details';
 import { DetailsService } from 'src/cars/details/details.service';
 import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
-import { CartItem } from './cart-item/cart-item.entity';
 import { CartItemService } from './cart-item/cart-item.service';
 import { Cart } from './carts.entity';
 
@@ -26,16 +24,7 @@ export class CartsService {
     }
 
     async updateCart(userId: number, details: InterfaceDetail[]) {
-        const user = await this.userRepository
-            .createQueryBuilder('users')
-            .leftJoinAndSelect('users.cart', 'cart')
-            .where('users.id = :id', { id: userId })
-            .getOne();
-        if (!user) {
-            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
-        }
-
-        const cart = await this.getCartById(user.cart.id);
+        const cart = await this.getCartByUserId(userId)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
@@ -74,16 +63,7 @@ export class CartsService {
     }
 
     async deleteFromCart(userId: number, details: InterfaceDetail[]) {
-        const user = await this.userRepository
-            .createQueryBuilder('users')
-            .leftJoinAndSelect('users.cart', 'cart')
-            .where('users.id = :id', { id: userId })
-            .getOne();
-        if (!user) {
-            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
-        }
-
-        const cart = await this.getCartById(user.cart.id);
+        const cart = await this.getCartByUserId(userId)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
@@ -111,10 +91,16 @@ export class CartsService {
         return await this.cartRepository.save(cart)
     }
 
-    async getCartByUser(user: User) {
+    async getCartByUserId(userId: number) {
+        const user = await this.userRepository
+            .createQueryBuilder('users')
+            .leftJoinAndSelect('users.cart', 'cart')
+            .where('users.id = :id', { id: userId })
+            .getOne();
         if (!user) {
             throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
+        
         return await this.cartRepository
             .createQueryBuilder('carts')
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
