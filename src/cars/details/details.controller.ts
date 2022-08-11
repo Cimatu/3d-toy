@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import Detail from './deltails.entity';
 import { DetailsService } from './details.service';
@@ -15,15 +15,15 @@ export class DetailsController {
         return this.detailsServie.createDetail();
     }
 
-    @ApiOperation({ summary: 'Get details catalog ' })
-    @ApiResponse({ status: 200 })
+    @ApiOperation({ summary: 'Get details catalog' })
+    @ApiResponse({ status: 200, type: [Detail] })
     @Get('get_all')
     getAllDetails() {
         return this.detailsServie.getAllDetails()
     }
 
     @ApiOperation({ summary: 'Filtered details catalog ' })
-    @ApiResponse({ status: 200 })
+    @ApiResponse({ status: 200, type: [Detail] })
     @Get('filter')
     filterDetails(@Body() body: { types: string[] }) {
         return this.detailsServie.filterDetails(body.types);

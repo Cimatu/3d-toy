@@ -17,14 +17,14 @@ export class CartsController {
     //     return this.cartService.createCart();
     // }
 
-    @ApiOperation({ summary: 'Get cart by user id' })
+    @ApiOperation({ summary: 'Update cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
     @Post('update')
     update(@Body() body: { id: number, array: InterfaceDetail[] }) {
         return this.cartService.updateCart(body.id, body.array);
     }
 
-    @ApiOperation({ summary: 'Get cart by user id' })
+    @ApiOperation({ summary: 'Delete cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
     @Delete('delete')
     delete(@Body() body: { id: number, array: InterfaceDetail[] }) {
@@ -33,8 +33,8 @@ export class CartsController {
 
     @ApiOperation({ summary: 'Get cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
-    @Post('get_by_user')
-    getByUser(@Body() body: { id: number, array: InterfaceDetail[] }) {
-        return this.cartService.updateCart(body.id, body.array);
+    @Get('get_by_user_id')
+    getByUserId(@Body() body: { id: number }) {
+        return this.cartService.getCartByUserId(body.id);
     }
 }

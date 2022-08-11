@@ -19,6 +19,7 @@ export class Cart {
     quantity: number;
 
     @OneToOne(() => User, {onDelete: "CASCADE"})
+    @JoinColumn()
     user: User;
 
     @ApiProperty({ description: 'Array with all details in the cart' })

@@ -1,20 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ChildEntity, Column } from "typeorm";
-import Detail from "../../deltails.entity";
 
-@ChildEntity()
-class BallBearingSet extends Detail {
-    @ApiProperty({ example: 1, description: 'Detail price' })
-    @Column({ default: 0 })
+export class CreateBBSDto {
+    @ApiProperty({ example: 1, description: 'Ball Bearing Set price' })
     price: number;
 
     @ApiProperty({ example: 'Ball Bearing Set', description: "Unique detail name" })
-    @Column({ unique: true, default: 'Ball Bearing Set' })
     name: string;
-
-    @ApiProperty({ example: "BallBearingSet", description: 'Detail type' })
-    @Column({ default: "BallBearingSet" })
-    type: string;
 
     @ApiProperty({
         example: `Used to replace the bearing positions of chassis, 
@@ -23,8 +14,5 @@ class BallBearingSet extends Detail {
     contact position when the vehicle rotates can be reduced.`,
         description: 'Description for detail'
     })
-    @Column()
-    note: string
+    note: string;
 }
-
-export default BallBearingSet

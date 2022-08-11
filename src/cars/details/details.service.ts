@@ -1,9 +1,8 @@
 
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import Detail from './deltails.entity';
-import Gear from './sets/gears/gears.entity';
 
 
 @Injectable()
@@ -18,11 +17,10 @@ export class DetailsService {
     }
 
     async getDetailByName(name: string) {
-        const detail = await this.detailRepository
+        return await this.detailRepository
             .createQueryBuilder('details')
             .where('details.name = :name', { name })
             .getOne();
-        return detail
     }
 
     async getAllDetails() {

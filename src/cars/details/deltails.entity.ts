@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { Car } from "../cars.entity";
 
 @Entity()
@@ -14,7 +14,6 @@ class Detail {
 
     @Column()
     type: string;
-
 }
 
 export default Detail

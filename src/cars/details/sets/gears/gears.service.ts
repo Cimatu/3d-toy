@@ -1,7 +1,8 @@
 
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { CreateGearDto } from './dto/create-gears.dto';
 import Gear from './gears.entity';
 
 
@@ -12,7 +13,7 @@ export class GearsService {
         private readonly gearRepository: Repository<Gear>,
     ) { }
 
-    async createGear(dto: {price: number, name: string}) {
+    async createGear(dto: CreateGearDto) {
         return await this.gearRepository.save(dto);
     }
 

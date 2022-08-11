@@ -6,7 +6,6 @@ import Gear from './gears.entity';
 import { GearsService } from './gears.service';
 
 
-
 @Module({
   controllers: [GearsController],
   providers: [GearsService],

@@ -1,25 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Car } from "src/cars/cars.entity";
-import { ChildEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ChildEntity, Column } from "typeorm";
 import Detail from "../deltails.entity";
 
 @ChildEntity()
 class BodyCar extends Detail {
-    @ApiProperty({ example: 1, description: 'Car body price' })
+    @ApiProperty({ example: 1, description: 'Detail price' })
     @Column({ default: 0 })
     price: number;
 
-    @ApiProperty({ example: 'PINK BOOM', description: 'Unique car body name' })
+    @ApiProperty({ example: 'PINK BOOM', description: 'Unique detail name' })
     @Column({ unique: true })
     name: string;
 
-    @ApiProperty({ example: "BodyCar", description: 'Car body type' })
+    @ApiProperty({ example: '570*465*285mm', description: 'Car body size in 3 dimmensions' })
+    @Column({ nullable: true })
+    dimmensions: string;
+
+    @ApiProperty({ example: "BodyCar", description: 'Detail type' })
     @Column({ default: "BodyCar" })
     type: string;
-
-    @ApiProperty({ example: '570*465*285mm', description: 'Size of car body' })
-    @Column({ nullable: true })
-    dimmensions: string
 }
 
 export default BodyCar

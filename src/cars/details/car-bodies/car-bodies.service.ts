@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateDetailDto } from '../dto/create-detail.dto';
 import BodyCar from './car-bodies.entity';
+import { CreateCarBodyDto } from './dto/create-car-body.dto';
 
 
 @Injectable()
@@ -12,7 +12,7 @@ export class BodiesService {
         private readonly bodyRepository: Repository<BodyCar>,
     ) { }
 
-    async createBody(dto: { price: number, name: string, dimmensions: string }) {
+    async createBody(dto: CreateCarBodyDto) {
         return await this.bodyRepository.save(dto);
     }
 

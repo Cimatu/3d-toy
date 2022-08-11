@@ -23,6 +23,8 @@ import { Event } from './events/events.entity';
 import { UserData } from './events/usersData/usersData.entity';
 import EventsModule from './events/events.module';
 import UserDataModule from './events/usersData/usersData.module';
+import CylindersModule from './cars/details/cylinders/cylinders.module';
+import Cylinder from './cars/details/cylinders/cylinders.entity';
 
 @Module({
   controllers: [],
@@ -38,7 +40,7 @@ import UserDataModule from './events/usersData/usersData.module';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Car, Cart, CartItem, Order, Wheel, Spoiler, Toning, Detail, BallBearingSet, Gear, BodyCar, Event, UserData],
+      entities: [User, Car, Cart, CartItem, Order, Wheel, Spoiler, Toning, Detail, BallBearingSet, Gear, BodyCar, Event, UserData, Cylinder],
       synchronize: true,
       ssl: { rejectUnauthorized: false },
     }),
@@ -55,7 +57,8 @@ import UserDataModule from './events/usersData/usersData.module';
     GearsModule,
     CarBodiesModule,
     EventsModule,
-    UserDataModule
+    UserDataModule,
+    CylindersModule
 
   ],
 })

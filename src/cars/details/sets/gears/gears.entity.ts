@@ -8,13 +8,13 @@ class Gear extends Detail {
     @Column({ default: 0 })
     price: number;
 
-    @ApiProperty({ example: "Gear", description: 'Car body type' })
-    @Column({ default: "Gear" })
-    type: string;
-
-    @ApiProperty({ example: 'MINI 4WD PRO SUPER SPEED GEAR SET(for W-1 chassis Gear Ratio 3.0:1' })
+    @ApiProperty({ example: 'MINI 4WD PRO SUPER SPEED GEAR SET(for W-1 chassis Gear Ratio 3.0:1', description: "Unique detail name" })
     @Column({ unique: true })
     name: string;
+
+    @ApiProperty({ example: "Gear", description: 'Detail type' })
+    @Column({ default: "Gear" })
+    type: string;
 }
 
 export default Gear

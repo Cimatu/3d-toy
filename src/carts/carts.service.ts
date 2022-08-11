@@ -13,8 +13,8 @@ export class CartsService {
     constructor(
         @InjectRepository(Cart)
         private readonly cartRepository: Repository<Cart>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
+        // @InjectRepository(User)
+        // private readonly userRepository: Repository<User>,
         private detailsService: DetailsService,
         private cartItemService: CartItemService
     ) { }
@@ -92,19 +92,10 @@ export class CartsService {
     }
 
     async getCartByUserId(userId: number) {
-        const user = await this.userRepository
-            .createQueryBuilder('users')
-            .leftJoinAndSelect('users.cart', 'cart')
-            .where('users.id = :id', { id: userId })
-            .getOne();
-        if (!user) {
-            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
-        }
-        
         return await this.cartRepository
             .createQueryBuilder('carts')
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
-            .where('carts.user = :user', { user })
+            .where('carts.userId = :userId', { userId })
             .getOne();
     }
 

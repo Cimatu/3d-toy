@@ -1,8 +1,8 @@
-
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import BallBearingSet from './ball-bearing.entity';
+import { CreateBBSDto } from './dto/create-bbs.dto';
 
 
 @Injectable()
@@ -12,8 +12,8 @@ export class BallBearingService {
         private readonly ballBearingRepository: Repository<BallBearingSet>,
     ) { }
 
-    async createSet() {
-        return await this.ballBearingRepository.save({});
+    async createSet(dto: CreateBBSDto) {
+        return await this.ballBearingRepository.save(dto);
     }
 
     async getAll() {
