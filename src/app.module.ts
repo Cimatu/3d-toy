@@ -40,9 +40,10 @@ import UserDataModule from './events/usersData/usersData.module';
       database: process.env.POSTGRES_DATABASE,
       entities: [User, Car, Cart, CartItem, Order, Wheel, Spoiler, Toning, Detail, BallBearingSet, Gear, BodyCar, Event, UserData],
       synchronize: true,
-      extra: {
-        ssl: true
-      }
+      ssl: true,
+      // extra: {
+      //   ssl: true
+      // }
     }),
     UsersModule,
     CarsModule,
