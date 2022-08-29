@@ -42,7 +42,7 @@ import FAQsModule from './faq/faq.module';
       database: process.env.POSTGRES_DATABASE,
       entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, BallBearingSet, Gear, BodyCar, Spacer, Cylinder, Roller, Motor],
       synchronize: true,
-      // ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,
