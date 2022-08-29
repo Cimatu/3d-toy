@@ -4,6 +4,7 @@ import { CreateDetailDto } from '../dto/create-detail.dto';
 import { BodiesService } from './bodies.service';
 import CarBody from './bodies.entity'
 
+
 @ApiTags('Bodies')
 @Controller('bodies')
 export class BodiesController {

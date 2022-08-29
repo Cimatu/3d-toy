@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Car } from 'src/cars/cars.entity';
 import { GearsController } from './gears.controller';
-import Gear from './gears.entity';
 import { GearsService } from './gears.service';
+import Gear from './gears.entity';
 
 
 @Module({
   controllers: [GearsController],
   providers: [GearsService],
   imports: [
-    TypeOrmModule.forFeature([Gear, Car]),
+    TypeOrmModule.forFeature([Gear]),
   ],
   exports: [
   ]

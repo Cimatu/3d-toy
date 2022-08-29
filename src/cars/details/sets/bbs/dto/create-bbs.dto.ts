@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+
 export class CreateBBSDto {
     @ApiProperty({ example: 1, description: 'Ball Bearing Set price' })
     price: number;

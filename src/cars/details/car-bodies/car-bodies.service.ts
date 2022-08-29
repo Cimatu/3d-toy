@@ -16,8 +16,10 @@ export class BodiesService {
         return await this.bodyRepository.save(dto);
     }
 
-    async getAll() {
-        return await this.bodyRepository.find();
+    async getAllBodies() {
+        return await this.bodyRepository
+            .createQueryBuilder('car-bodies')
+            .getMany();
     }
 
     async getBodyByName(name: string) {

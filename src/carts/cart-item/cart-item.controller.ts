@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CartItemService } from './cart-item.service';
 
 
-@ApiTags('Carts')
+@ApiTags('Cart item')
 @Controller('cart-item')
 export class CartItemController {
 

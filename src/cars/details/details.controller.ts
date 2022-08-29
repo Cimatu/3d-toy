@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import Detail from './deltails.entity';
 import { DetailsService } from './details.service';
+import Detail from './deltails.entity';
+
 
 @ApiTags('Details')
 @Controller('details')
@@ -29,4 +30,3 @@ export class DetailsController {
         return this.detailsServie.filterDetails(body.types);
     }
 }
-

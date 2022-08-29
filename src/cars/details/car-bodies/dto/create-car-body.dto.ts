@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+
 export class CreateCarBodyDto {
     @ApiProperty({ example: 1, description: 'Detail price' })
     price: number;

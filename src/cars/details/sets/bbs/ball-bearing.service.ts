@@ -12,11 +12,11 @@ export class BallBearingService {
         private readonly ballBearingRepository: Repository<BallBearingSet>,
     ) { }
 
-    async createSet(dto: CreateBBSDto) {
+    async createBBS(dto: CreateBBSDto) {
         return await this.ballBearingRepository.save(dto);
     }
 
-    async getAll() {
+    async getAllBBS() {
         return await this.ballBearingRepository
             .createQueryBuilder('ball_bearing_set')
             .getMany();

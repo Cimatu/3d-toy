@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Cylinder from './cylinders.entity';
@@ -16,18 +16,9 @@ export class CylindersService {
         return await this.cylinderRepository.save(dto);
     }
 
-    async getAll() {
-        return await this.cylinderRepository.find();
+    async getAllCylinders() {
+        return await this.cylinderRepository
+            .createQueryBuilder('cylinders')
+            .getMany();
     }
-
-    // async getBodyByName(name: string) {
-    //     const body = await this.bodyRepository
-    //         .createQueryBuilder('car-bodies')
-    //         .where('car-bodies.name = :name', { name })
-    //         .getOne();
-    //     if (!body) {
-    //         throw new HttpException("Body not found", HttpStatus.NOT_FOUND);
-    //     }
-    //     return body;
-    // }
 }

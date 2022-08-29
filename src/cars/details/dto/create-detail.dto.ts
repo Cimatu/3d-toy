@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+
 export class CreateDetailDto {
     @ApiProperty({example: 10, description: 'Car detail class from 1 to 10'})
     class: number;

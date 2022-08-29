@@ -1,6 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 import { Car } from "../cars.entity";
+
 
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "type" } })

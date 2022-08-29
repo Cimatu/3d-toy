@@ -4,6 +4,7 @@ import { CreateDetailDto } from '../dto/create-detail.dto';
 import Toning from './tonings.entity';
 import { ToningsService } from './tonings.service';
 
+
 @ApiTags('Tonings')
 @Controller('tonings')
 export class ToningsController {

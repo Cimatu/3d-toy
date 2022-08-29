@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import BallBearingSet from './ball-bearing.entity';
 import { BallBearingService } from './ball-bearing.service';
+import BallBearingSet from './ball-bearing.entity';
 import { CreateBBSDto } from './dto/create-bbs.dto';
 
 
@@ -14,15 +14,14 @@ export class BallBearingController {
     @ApiResponse({ status: 200, type: BallBearingSet })
     @Post('create')
     create(@Body() dto: CreateBBSDto) {
-        return this.detailsServie.createSet(dto);
+        return this.detailsServie.createBBS(dto);
     }
 
     @ApiOperation({ summary: 'Get Ball bearing set' })
     @ApiResponse({ status: 200, type: [BallBearingSet] })
     @Get('get_all')
-    getAllDetails() {
-        return this.detailsServie.getAll()
+    getAll() {
+        return this.detailsServie.getAllBBS()
     }
 
 }
-

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import BodyCar from './car-bodies.entity';
 import { BodiesService } from './car-bodies.service';
+import BodyCar from './car-bodies.entity';
 import { CreateCarBodyDto } from './dto/create-car-body.dto';
 
 
@@ -22,12 +22,12 @@ export class BodiesController {
     @ApiResponse({ status: 200, type: [BodyCar] })
     @Get('get_all')
     getAll() {
-        return this.bodiesService.getAll();
+        return this.bodiesService.getAllBodies();
     }
 
     @ApiOperation({ summary: `Get car body by name` })
     @ApiResponse({ status: 200, type: BodyCar })
-    @Get('/:name')
+    @Get('get_by_name/:name')
     getByName(@Param('name') name: string) {
         return this.bodiesService.getBodyByName(name);
     }

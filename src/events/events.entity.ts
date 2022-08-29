@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 import { UserData } from "./usersData/usersData.entity";
 
 
@@ -9,16 +9,19 @@ export class Event {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @ApiProperty({ example: 50, description: 'Price of all parts of the car in cart' })
+    @ApiProperty({ example: "Car toys Tournament In China", description: 'Event name' })
     @Column()
     name: string;
 
+    @ApiProperty({ example: "16 Sept 2020", description: 'Event date' })
     @Column()
     date: string;
 
+    @ApiProperty({ example: "Lorem ipsum", description: 'Event description' })
     @Column()
     description: string;
 
+    @ApiProperty({ example: "https://klike.net/uploads/posts/2019-05/1556708032_1.jpg", description: 'Url to event image' })
     @Column()
     img: string
 

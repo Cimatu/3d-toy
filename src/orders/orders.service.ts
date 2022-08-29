@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CartItem } from 'src/carts/cart-item/cart-item.entity';
-import { Cart } from 'src/carts/carts.entity';
-import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
 import { Order } from './orders.entity';
+import { CreateOrderDto } from './dto/create-order.dto';
+
 
 @Injectable()
 export class OrdersService {
@@ -15,8 +15,10 @@ export class OrdersService {
     ) { }
 
 
-    async createOrder(cart: Cart) {
-        const order = await this.orderRepository.create({ cartItems: cart.cartItems, quantity: cart.quantity, total: cart.total })
+    async createOrder(orderDto: CreateOrderDto) {
+        const { country, city, cart } = orderDto;
+        const { cartItems, quantity, total } = cart;
+        const order = await this.orderRepository.create({ country, city, cartItems, quantity, total, user: cart.user })
         return await this.orderRepository.save(order);
     }
 

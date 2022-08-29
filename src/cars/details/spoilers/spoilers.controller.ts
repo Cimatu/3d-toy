@@ -26,8 +26,8 @@ export class SpoilersController {
 
     @ApiOperation({ summary: `Get spoiler by name` })
     @ApiResponse({ status: 200, type: Spoiler })
-    @Get('/:name')
-    getByValue(@Param('name') name: string) {
+    @Get('get_by_name/:name')
+    getByName(@Param('name') name: string) {
         return this.spoilersService.getSpoilerByName(name);
     }
 }

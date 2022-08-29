@@ -1,6 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { ChildEntity, Column } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 import Detail from "../../deltails.entity";
+
 
 @ChildEntity()
 class BallBearingSet extends Detail {
@@ -11,10 +12,6 @@ class BallBearingSet extends Detail {
     @ApiProperty({ example: 'Ball Bearing Set', description: "Unique detail name" })
     @Column({ unique: true, default: 'Ball Bearing Set' })
     name: string;
-
-    @ApiProperty({ example: "BallBearingSet", description: 'Detail type' })
-    @Column({ default: "BallBearingSet" })
-    type: string;
 
     @ApiProperty({
         example: `Used to replace the bearing positions of chassis, 

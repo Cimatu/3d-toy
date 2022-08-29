@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Car } from "src/cars/cars.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
 
 @Entity('tonings')
 class Toning{

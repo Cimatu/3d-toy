@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Event } from './events.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { Event } from './events.entity';
+
 
 @Injectable()
 export class EventsService {
@@ -11,7 +12,6 @@ export class EventsService {
         @InjectRepository(Event)
         private readonly eventsRepository: Repository<Event>,
     ) { }
-
 
     async createEvent(eventsData: CreateEventDto) {
         const event = await this.eventsRepository.create(eventsData)
@@ -64,5 +64,4 @@ export class EventsService {
         }
         return await this.eventsRepository.delete(id);
     }
-
 }

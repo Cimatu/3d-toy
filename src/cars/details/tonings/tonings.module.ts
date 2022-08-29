@@ -5,6 +5,7 @@ import { ToningsController } from './tonings.controller';
 import Toning from './tonings.entity';
 import { ToningsService } from './tonings.service';
 
+
 @Module({
   controllers: [ToningsController],
   providers: [ToningsService],

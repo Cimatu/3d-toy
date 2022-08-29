@@ -1,6 +1,6 @@
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/users/users.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "../events.entity";
 
 
@@ -10,19 +10,19 @@ export class UserData {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @ApiProperty({ example: 50, description: 'Price of all parts of the car in cart' })
+    @ApiProperty({ example: "Dimasik", description: 'Realy?' })
     @Column({ default: 0 })
     firstName: string;
 
-    @Column()
+    @ApiProperty({ example: "Savritsky", description: 'Come on' })
+    @Column({ length: 500 })
     lastName: string;
 
+    @ApiProperty({ example: "dimasikgonapivasik@gmail.com", description: 'Bro, r u kidding?' })
     @Column()
     email: string;
 
-    // @Column()
-    // visitor: string
-
+    @ApiProperty({ example: "Hello world", description: 'Message user send to event' })
     @Column()
     message: string;
 

@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import UsersModule from 'src/users/users.module';
 import EventsModule from '../events.module';
 import { UserDataController } from './usersData.controller';
-import { UserData } from './usersData.entity';
 import { UserDataService } from './usersData.service';
+import { UserData } from './usersData.entity';
 
 
 @Module({

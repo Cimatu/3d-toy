@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './users.entity';
+import { Repository } from 'typeorm';
 import { CartsService } from 'src/carts/carts.service';
+import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()

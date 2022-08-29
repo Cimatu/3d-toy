@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateGearDto } from './dto/create-gears.dto';
-import Gear from './gears.entity';
 import { GearsService } from './gears.service';
+import Gear from './gears.entity';
+import { CreateGearDto } from './dto/create-gears.dto';
 
 
 @ApiTags('Gears')
@@ -20,9 +20,7 @@ export class GearsController {
     @ApiOperation({ summary: 'Get all gears' })
     @ApiResponse({ status: 200, type: [Gear] })
     @Get('get_all')
-    getAllDetails() {
-        return this.gearsServie.getAll()
+    getAllD() {
+        return this.gearsServie.getAllGears()
     }
-
 }
-

@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ChildEntity, Column } from "typeorm";
 import Detail from "../deltails.entity";
 
+
 @ChildEntity()
 class BodyCar extends Detail {
     @ApiProperty({ example: 1, description: 'Detail price' })
@@ -15,10 +16,6 @@ class BodyCar extends Detail {
     @ApiProperty({ example: '570*465*285mm', description: 'Car body size in 3 dimmensions' })
     @Column({ nullable: true })
     dimmensions: string;
-
-    @ApiProperty({ example: "BodyCar", description: 'Detail type' })
-    @Column({ default: "BodyCar" })
-    type: string;
 }
 
 export default BodyCar

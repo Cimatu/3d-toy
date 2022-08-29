@@ -1,8 +1,9 @@
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+import { Cart } from "../carts.entity";
 import { Detail } from "src/cars/details";
 import { Order } from "src/orders/orders.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Cart } from "../carts.entity";
+
 
 @Entity('cart-item')
 export class CartItem {

@@ -1,7 +1,7 @@
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { CartItem } from "src/carts/cart-item/cart-item.entity";
 import { User } from "src/users/users.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('orders')
@@ -10,21 +10,23 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ApiProperty({ example: 50, description: 'Price of all parts of the car in cart' })
+    @ApiProperty({ example: 50, description: 'Price of all parts of the car in order' })
     @Column({ default: 0 })
     total: number;
 
+    @ApiProperty({example: 'Taiwan', description: "Country to deliver the order"})
     @Column()
     country: string;
 
+    @ApiProperty({example: 'Taibei', description: "City to deliver the order"})
     @Column()
     city: string;
 
-    @ApiProperty({ example: 5, description: 'Quantity of all parts of the car in cart' })
+    @ApiProperty({ example: 5, description: 'Quantity of all parts of the car in order' })
     @Column({ default: 0 })
     quantity: number;
 
-    @ApiProperty({ description: 'Array with all details in the cart' })
+    @ApiProperty({ description: 'Array with all details in the order' })
     @OneToMany(() => CartItem, cartItem => cartItem.order)
     @JoinTable()
     cartItems: CartItem[];

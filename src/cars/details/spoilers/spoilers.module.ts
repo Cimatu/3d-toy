@@ -11,7 +11,7 @@ import { SpoilersService } from './spoilers.service';
   controllers: [SpoilersController],
   providers: [SpoilersService],
   imports: [
-    TypeOrmModule.forFeature([Spoiler, Car]),
+    TypeOrmModule.forFeature([Spoiler]),
   ],
   exports: [
     SpoilersService

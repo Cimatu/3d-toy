@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ChildEntity, Column } from "typeorm";
 import Detail from "../deltails.entity";
 
+
 @ChildEntity()
 class Cylinder extends Detail{
     @ApiProperty({ example: 1, description: 'Detail price' })

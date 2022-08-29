@@ -1,9 +1,9 @@
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
-import { Car } from "src/cars/cars.entity";
-import { Cart } from "src/carts/carts.entity";
 import { UserData } from "src/events/usersData/usersData.entity";
 import { Order } from "src/orders/orders.entity";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Car } from "src/cars/cars.entity";
+import { Cart } from "src/carts/carts.entity";
 import { Role } from "./role.enum";
 
 @Entity('users')

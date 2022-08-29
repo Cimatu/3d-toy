@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DetailsService } from 'src/cars/details/details.service';
-import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
+import { DetailsService } from 'src/cars/details/details.service';
 import { CartItemService } from './cart-item/cart-item.service';
 import { Cart } from './carts.entity';
 
@@ -13,8 +12,6 @@ export class CartsService {
     constructor(
         @InjectRepository(Cart)
         private readonly cartRepository: Repository<Cart>,
-        // @InjectRepository(User)
-        // private readonly userRepository: Repository<User>,
         private detailsService: DetailsService,
         private cartItemService: CartItemService
     ) { }

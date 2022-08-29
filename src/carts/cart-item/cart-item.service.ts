@@ -1,7 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Detail } from 'src/cars/details';
 import { Repository } from 'typeorm';
+import { Detail } from 'src/cars/details';
 import { CartItem } from './cart-item.entity';
 
 
@@ -11,7 +11,6 @@ export class CartItemService {
     constructor(
         @InjectRepository(CartItem)
         private readonly cartItemRepository: Repository<CartItem>,
-
     ) { }
 
     async createCartItem(detail: Detail) {

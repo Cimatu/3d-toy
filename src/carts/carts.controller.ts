@@ -1,21 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Detail } from 'src/cars/details';
-import { Cart } from './carts.entity';
 import { CartsService } from './carts.service';
+import { Cart } from './carts.entity';
+
 
 @ApiTags('Carts')
 @Controller('carts')
 export class CartsController {
 
     constructor(private cartService: CartsService) { }
-
-    // @ApiOperation({ summary: 'Cart creation' })
-    // @ApiResponse({ status: 200, type: Cart })
-    // @Post('create/:username')
-    // create() {
-    //     return this.cartService.createCart();
-    // }
 
     @ApiOperation({ summary: 'Update cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
