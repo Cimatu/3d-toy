@@ -41,9 +41,9 @@ export class FAQsService {
         await this.faqRepository.delete(id);
         faq = await this.getOneById(id);
         if(!faq){
-            return {message: "FAQ was successfuly deleted", status: HttpStatus.OK}
+            return {message: "FAQ was successfuly deleted"}
         }else{
-            return {message: "FAQ wasn't deleted", status: HttpStatus.BAD_REQUEST}
+            return {message: "FAQ wasn't deleted"}
         }
     }
 

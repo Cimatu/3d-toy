@@ -7,9 +7,6 @@ import { CreateFaqDto } from './dto/create-faq.dto';
 class DeleteResponse {
     @ApiProperty({ example: 'FAQ was successfuly deleted' })
     message: string;
-
-    @ApiProperty({ example: 200 })
-    status: HttpStatus;
 }
 
 
@@ -26,13 +23,12 @@ export class FAQsController {
         return this.faqService.createFAQ(faqDto);
     }
 
-    @ApiOperation({ summary: 'Update FAQ by ID' })
+    @ApiOperation({ summary: 'Update FAQ by id' })
     @ApiResponse({ status: 200, type: FAQ })
     @Post('update/:id')
     update(@Param('id') id: number, @Body() faqDto: CreateFaqDto) {
         return this.faqService.updateFAQById(id, faqDto);
     }
-
 
     @ApiOperation({ summary: 'Delete FAQ by id' })
     @ApiResponse({ status: 200, type: DeleteResponse })
@@ -41,14 +37,14 @@ export class FAQsController {
         return this.faqService.deleteFAQById(id);
     }
 
-    @ApiOperation({ summary: `FAQs list` })
+    @ApiOperation({ summary: `Get FAQs list` })
     @ApiResponse({ status: 200, type: [FAQ] })
     @Get('get_all')
     getAll() {
         return this.faqService.getAllFAQs();
     }
 
-    @ApiOperation({ summary: `One single FAQ getted by id` })
+    @ApiOperation({ summary: 'Get one single FAQ by its id'  })
     @ApiResponse({ status: 200, type: FAQ })
     @Get('get_one/:id')
     getOne(@Param('id') id: number) {

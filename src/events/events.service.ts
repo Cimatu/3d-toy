@@ -21,9 +21,10 @@ export class EventsService {
         return await this.eventsRepository.save(event);
     }
 
-    async updateEvent(eventData: UpdateEventDto) {
-        const { eventId, name, description, date, img } = eventData;
-        const event = await this.getEventById(eventId);
+    async updateEventById(id: number, eventData: UpdateEventDto) {
+        const {name, description, date, img } = eventData;
+
+        const event = await this.getEventById(id);
         if (!event) {
             throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
         }
@@ -42,12 +43,18 @@ export class EventsService {
         return await this.eventsRepository.save(event);
     }
 
-    async getEventById(id: number) {
-        return await this.eventsRepository
-            .createQueryBuilder('events')
-            .leftJoinAndSelect('events.usersData', 'usersData')
-            .where('events.id = :id', { id })
-            .getOne();
+    async deleteEventById(id: number) {
+        let event = await this.getEventById(id);
+        if (!event) {
+            throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
+        }
+        await this.eventsRepository.delete(id);
+        event = await this.getEventById(id);
+        if(!event){
+            return {message: "Event was successfuly deleted"}
+        }else{
+            return {message: "FAQ wasn't deleted"}
+        }
     }
 
     async getAllEvents() {
@@ -57,11 +64,11 @@ export class EventsService {
             .getMany();
     }
 
-    async deleteEventById(id: number) {
-        const event = await this.getEventById(id);
-        if (!event) {
-            throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
-        }
-        return await this.eventsRepository.delete(id);
+    async getEventById(id: number) {
+        return await this.eventsRepository
+            .createQueryBuilder('events')
+            .leftJoinAndSelect('events.usersData', 'usersData')
+            .where('events.id = :id', { id })
+            .getOne();
     }
 }

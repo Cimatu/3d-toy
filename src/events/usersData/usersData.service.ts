@@ -17,8 +17,8 @@ export class UserDataService {
     ) { }
 
 
-    async createUserData(eventId: number, userData: CreateUserDataDto) {
-        const user = await this.userService.getUserById(userData.userId);
+    async createUserData(eventId: number, userDataDto: CreateUserDataDto) {
+        const user = await this.userService.getUserById(userDataDto.userId);
         if (!user) {
             throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
@@ -26,8 +26,8 @@ export class UserDataService {
         if (!event) {
             throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
         }
-        const order = await this.userDataRepository.create({ user, event, ...userData.fields })
-        return await this.userDataRepository.save(order);
+        const userData = await this.userDataRepository.create({ user, event, ...userDataDto.fields })
+        return await this.userDataRepository.save(userData);
     }
 
     async getUserDataByUser(userId: number) {
