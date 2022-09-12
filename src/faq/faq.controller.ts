@@ -1,8 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FAQsService } from './faq.service';
 import { FAQ } from './faq.entity';
 import { CreateFaqDto } from './dto/create-faq.dto';
+
+class DeleteResponse {
+    message: string;
+    status: HttpStatus
+}
 
 
 @ApiTags('FAQs')
@@ -11,11 +16,26 @@ export class FAQsController {
 
     constructor(private faqService: FAQsService) { }
 
-    @ApiOperation({ summary: 'FAQ creation' })
+    @ApiOperation({ summary: 'Create FAQ' })
     @ApiResponse({ status: 200, type: FAQ })
     @Post('create')
-    create(@Body() orderDto: CreateFaqDto) {
-        return this.faqService.createFAQ(orderDto);
+    create(@Body() faqDto: CreateFaqDto) {
+        return this.faqService.createFAQ(faqDto);
+    }
+
+    @ApiOperation({ summary: 'Update FAQ by ID' })
+    @ApiResponse({ status: 200, type: FAQ })
+    @Post('update/:id')
+    update(@Param('id') id: number, @Body() faqDto: CreateFaqDto) {
+        return this.faqService.updateFAQById(id, faqDto);
+    }
+
+
+    @ApiOperation({ summary: 'Delete FAQ by id' })
+    @ApiResponse({ status: 200, type: DeleteResponse })
+    @Delete('delete/:id')
+    delete(@Param('id') id: number) {
+        return this.faqService.deleteFAQById(id);
     }
 
     @ApiOperation({ summary: `FAQs list` })
