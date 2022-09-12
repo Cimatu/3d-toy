@@ -27,6 +27,8 @@ import RollersModule from './cars/details/rollers/rollers.module';
 import FAQsModule from './faq/faq.module';
 import { Video } from './video/video.entity';
 import VideoModule from './video/video.module';
+import { News } from './news/news.entity';
+import NewsModule from './news/news.module';
 
 @Module({
   controllers: [],
@@ -42,9 +44,9 @@ import VideoModule from './video/video.module';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, BallBearingSet, Gear, BodyCar, Spacer, Cylinder, Roller, Motor, Video],
+      entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, BallBearingSet, Gear, BodyCar, Spacer, Cylinder, Roller, Motor, Video, News],
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
+      // ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,
@@ -61,7 +63,8 @@ import VideoModule from './video/video.module';
     CylindersModule,
     RollersModule,
     FAQsModule,
-    VideoModule
+    VideoModule,
+    NewsModule
   ],
 })
 export class AppModule { }
