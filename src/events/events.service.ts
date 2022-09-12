@@ -38,7 +38,7 @@ export class EventsService {
             event.img = eventData.img;
         }
         if (date) {
-            event.date = eventData.name;
+            event.date = eventData.date;
         }
         return await this.eventsRepository.save(event);
     }
@@ -53,7 +53,7 @@ export class EventsService {
         if(!event){
             return {message: "Event was successfuly deleted"}
         }else{
-            return {message: "FAQ wasn't deleted"}
+            return {message: "Event wasn't deleted"}
         }
     }
 
