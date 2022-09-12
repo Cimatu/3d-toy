@@ -1,12 +1,15 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FAQsService } from './faq.service';
 import { FAQ } from './faq.entity';
 import { CreateFaqDto } from './dto/create-faq.dto';
 
 class DeleteResponse {
+    @ApiProperty({ example: 'FAQ was successfuly deleted' })
     message: string;
-    status: HttpStatus
+
+    @ApiProperty({ example: 200 })
+    status: HttpStatus;
 }
 
 
@@ -43,5 +46,12 @@ export class FAQsController {
     @Get('get_all')
     getAll() {
         return this.faqService.getAllFAQs();
+    }
+
+    @ApiOperation({ summary: `One single FAQ getted by id` })
+    @ApiResponse({ status: 200, type: FAQ })
+    @Get('get_one/:id')
+    getOne(@Param('id') id: number) {
+        return this.faqService.getOneById(id);
     }
 }
