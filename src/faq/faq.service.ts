@@ -13,21 +13,21 @@ export class FAQsService {
 
     ) { }
 
-    async createFAQ(faqDto: CreateFaqDto) {
-        return await this.faqRepository.save(faqDto)
+    async createFAQ(dto: CreateFaqDto) {
+        return await this.faqRepository.save(dto)
     }
 
-    async updateFAQById(id: number, faqDto: CreateFaqDto) {
+    async updateFAQById(id: number, dto: CreateFaqDto) {
         const faq = await this.getOneById(id)
         if (!faq) {
             throw new HttpException("FAQ not found", HttpStatus.NOT_FOUND);
         }
-        if (faqDto.name) {
-            faq.name = faqDto.name;
+        if (dto.name) {
+            faq.name = dto.name;
         }
 
-        if (faqDto.text) {
-            faq.text = faqDto.text;
+        if (dto.text) {
+            faq.text = dto.text;
         }
 
         return await this.faqRepository.save(faq)

@@ -13,11 +13,7 @@ export class NewsService {
     ) { }
 
     async createNews(dto: CreateNewsDto) {
-        const event = await this.newsRepository.create(dto)
-        if (!event) {
-            throw new HttpException("News wasn't created", HttpStatus.NOT_FOUND);
-        }
-        return await this.newsRepository.save(event);
+        return await this.newsRepository.save(dto);
     }
 
     async updateNewsById(id: number, dto: CreateNewsDto) {

@@ -13,12 +13,8 @@ export class EventsService {
         private readonly eventsRepository: Repository<Event>,
     ) { }
 
-    async createEvent(eventsData: CreateEventDto) {
-        const event = await this.eventsRepository.create(eventsData)
-        if (!event) {
-            throw new HttpException("Event wasn't created", HttpStatus.NOT_FOUND);
-        }
-        return await this.eventsRepository.save(event);
+    async createEvent(dto: CreateEventDto) {
+        return await this.eventsRepository.save(dto);
     }
 
     async updateEventById(id: number, eventData: UpdateEventDto) {

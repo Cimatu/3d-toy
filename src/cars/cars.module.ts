@@ -4,7 +4,7 @@ import DetailsModule from './details/details.module';
 import UsersModule from 'src/users/users.module';
 import { CarsController } from './cars.controller';
 import { CarsService } from './cars.service';
-import Detail from './details/deltails.entity';
+import { Detail } from './details/deltails.entity';
 import { Cart } from 'src/carts/carts.entity';
 import { User } from 'src/users/users.entity';
 import { Car } from './cars.entity';

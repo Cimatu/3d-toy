@@ -3,9 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Car } from "../cars.entity";
 
 
-@Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
-class Detail {
+@Entity('details')
+// @TableInheritance({ column: { type: "varchar", name: "type" } })
+export class Detail {
     @ApiProperty({ example: 1, description: 'Unique identificator' })
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,8 +13,33 @@ class Detail {
     @ManyToMany(() => Car, (cars) => cars.details)
     cars: Car[];
 
+    @ApiProperty({ example: 'spoiler', description: 'Detail type' })
     @Column()
     type: string;
-}
 
-export default Detail
+    @ApiProperty({ example: 'Prime', description: 'Unique detail name' })
+    @Column({ unique: true })
+    name: string;
+
+    @ApiProperty({example: "Red"})
+    @Column({default: null})
+    color: string;
+
+    @ApiProperty({ example: '570*465*285mm', description: 'Detail dimmensions' })
+    @Column({default: null})
+    dimmensions: string;
+
+    @ApiProperty({ example: 100, description: 'Detail price' })
+    @Column()
+    price: number;
+
+    @ApiProperty({
+        example: `
+    This component is in different colors 
+    (Orange, Black, Silver, Red and Golden) 
+    in the app shall be shown all`,
+        description: 'Detail note'
+    })
+    @Column({default: null})
+    note: string;
+}
