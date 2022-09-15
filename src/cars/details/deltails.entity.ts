@@ -33,6 +33,10 @@ export class Detail {
     @Column()
     price: number;
 
+    @ApiProperty({ example: "Any url", description: 'Detail image' })
+    @Column({default: null})
+    img: string;
+
     @ApiProperty({
         example: `
     This component is in different colors 

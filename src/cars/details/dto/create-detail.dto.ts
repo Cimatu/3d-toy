@@ -17,6 +17,9 @@ export class CreateDetailDto {
     @ApiProperty({ example: '570*465*285mm', description: 'Detail dimmensions' })
     dimmensions?: string;
 
+    @ApiProperty({ example: "Any url", description: 'Detail image' })
+    img: string;
+
     @ApiProperty({
         example: `
     This component is in different colors 
