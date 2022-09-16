@@ -1,15 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 
-export class CreateDetailDto {
+export class UpdateDetailDto {
     @ApiProperty({ example: 'spoiler', description: 'Detail type' })
-    type: string;
+    type?: string;
 
     @ApiProperty({ example: 'Prime', description: 'Unique detail name' })
-    name: string;
+    name?: string;
 
     @ApiProperty({ example: 100, description: 'Detail price' })
-    price: number;
+    price?: number;
 
     @ApiProperty({example: "Red"})
     color?: string;
