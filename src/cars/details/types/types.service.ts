@@ -6,7 +6,6 @@ import { UpdateTypeDto } from './dto/update-type.dto';
 import { Type } from './types.entity';
 
 
-
 @Injectable()
 export class TypesService {
     constructor(

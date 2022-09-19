@@ -1,12 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Detail } from "../deltails.entity";
 
-
-export class GetDetailByNameDto {
-    @ApiProperty({ example: "Some gear name", description: 'Detail name' })
-    name: string;
-}
-
 export class GetDetailsByPriceDto {
     @ApiProperty({
         example: [{
@@ -46,4 +40,9 @@ export class GetDetailsByPriceDto {
 
     @ApiProperty({ example: 100, description: 'Max price for filtering' })
     max: number
+}
+
+export class GetDetailsByTypesIdsDto {
+    @ApiProperty({ example: [1, 3, 18], description: 'Types ids' })
+    ids: number[];
 }

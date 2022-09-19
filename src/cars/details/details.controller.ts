@@ -4,7 +4,7 @@ import { DetailsService } from './details.service';
 import { Detail } from './deltails.entity';
 import { CreateDetailDto } from './dto/create-detail.dto';
 import { UpdateDetailDto } from './dto/update-detail.dto';
-import { GetDetailByNameDto, GetDetailsByPriceDto } from './dto/get-detail-by.dto';
+import { GetDetailsByPriceDto, GetDetailsByTypesIdsDto } from './dto/get-detail-by.dto';
 
 
 @ApiTags('Details')
@@ -42,16 +42,23 @@ export class DetailsController {
 
     @ApiOperation({ summary: 'Get detail by name' })
     @ApiResponse({ status: 200, type: Detail })
-    @Get('get_by_name')
-    getDetailByName(@Body() dto: GetDetailByNameDto) {
-        return this.detailsServie.getDetailByName(dto.name);
+    @Get('get_by/:name')
+    getDetailByName(@Param('name') name: string) {
+        return this.detailsServie.getDetailByName(name);
     }
 
     @ApiOperation({ summary: 'Filtered details catalog by price' })
     @ApiResponse({ status: 200, type: [Detail] })
-    @Get('filter_by_price')
+    @Post('filter_by_price')
     filterDetailsByPrice(@Body() dto: GetDetailsByPriceDto) {
         return this.detailsServie.filterByPrice(dto);
+    }
+
+    @ApiOperation({ summary: "Get details by types ids" })
+    @ApiResponse({ status: 200, type: [Detail] })
+    @Post('get_details_by_types_ids')
+    getDetailsByTypesIds(@Body() dto: GetDetailsByTypesIdsDto) {
+        return this.detailsServie.getDetailsByTypesIds(dto.ids);
     }
 
     @ApiOperation({ summary: 'Delete detail by id' })

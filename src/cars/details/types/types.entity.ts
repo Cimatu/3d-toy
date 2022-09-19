@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from "ty
 import { ApiProperty } from "@nestjs/swagger";
 import { Detail } from "../deltails.entity";
 
+
 @Entity('types')
 export class Type {
     @ApiProperty({ example: 1, description: 'Unique identificator' })

@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Detail } from '../deltails.entity';
 import { CreateTypeDto } from './dto/create-type.dto';
-import { GetDetailsTypesIdsDto, GetDetailTypeNameDto } from './dto/get-details-by-types.dto';
+import { GetDetailsTypesIdsDto } from './dto/get-details-by-types.dto';
 import { UpdateTypeDto } from './dto/update-type.dto';
 import { Type } from './types.entity';
 import { TypesService } from './types.service';
@@ -35,15 +36,15 @@ export class TypesController {
 
     @ApiOperation({ summary: 'Get type by name' })
     @ApiResponse({ status: 200, type: Type })
-    @Get('get_by_name')
-    getTypeByName(@Body() dto: GetDetailTypeNameDto) {
-        return this.typesServie.getTypeByName(dto.name)
+    @Get('get_by/:name')
+    getTypeByName(@Param('name') name: string) {
+        return this.typesServie.getTypeByName(name)
     }
 
     @ApiOperation({ summary: "Get type's details by name" })
-    @ApiResponse({ status: 200, type: [Type] })
-    @Get('get_details_by_types_ids')
-    getDetailsByTypesId(@Body() dto: GetDetailsTypesIdsDto) {
+    @ApiResponse({ status: 200, type: [Detail] })
+    @Post('get_details_by_types_ids')
+    getDetailsByTypesIds(@Body() dto: GetDetailsTypesIdsDto) {
         return this.typesServie.getDetailsByTypesIds(dto.ids);
     }
 
