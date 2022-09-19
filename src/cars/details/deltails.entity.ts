@@ -18,7 +18,7 @@ export class Detail {
     @JoinColumn()
     type: Type;
 
-    @ApiProperty({ example: 'spoiler', description: 'Detail type id' })
+    @ApiProperty({ example: 3, description: 'Detail type id' })
     @Column({ nullable: false })
     typeId: number;
 
