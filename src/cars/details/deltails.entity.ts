@@ -16,7 +16,11 @@ export class Detail {
     @ApiProperty({ example: 'spoiler', description: 'Detail type' })
     @ManyToOne(() => Type, (type) => type.details, { onDelete: "SET NULL" })
     @JoinColumn()
-    type: Type
+    type: Type;
+
+    @ApiProperty({ example: 'spoiler', description: 'Detail type id' })
+    @Column({ nullable: false })
+    typeId: number;
 
     @ApiProperty({ example: 'Prime', description: 'Unique detail name' })
     @Column({ unique: true })
