@@ -37,7 +37,9 @@ export class TypesService {
             .update(Type)
             .set(dto)
             .where("id = :id", { id })
-            .execute()
+            .execute();
+
+        return await this.getTypeById(id);
     }
 
     async getTypeByName(name: string) {

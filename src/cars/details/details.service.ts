@@ -60,8 +60,8 @@ export class DetailsService {
             .update(Detail)
             .set({ type: detailType, ...newDto })
             .where("id = :id", { id })
-            .execute()
-
+            .execute();
+        return await this.getDetailById(id);
     }
 
     async getDetailsByColor(color: string) {
