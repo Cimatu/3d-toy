@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Detail } from './deltails.entity';
 import { CreateDetailDto } from './dto/create-detail.dto';
+import { GetDetailsByPriceDto } from './dto/get-detail-by.dto';
 import { UpdateDetailDto } from './dto/update-detail.dto';
 import { TypesService } from './types/types.service';
 
@@ -16,15 +17,19 @@ export class DetailsService {
     ) { }
 
     async createDetail(dto: CreateDetailDto) {
-        const { type, name, price, color, dimmensions, img, note } = dto;
-        let detailType = await this.typesService.getTypeByName(type);
+        const checkName = await this.getDetailByName(dto.name);
+        if (checkName) {
+            throw new HttpException("Detail with such name already exists", HttpStatus.FORBIDDEN);
+        }
+        const { typeId, name, price, color, dimmensions, img, note } = dto;
+        let detailType = await this.typesService.getTypeById(typeId);
         if (!detailType) {
             throw new HttpException("Type not found", HttpStatus.NOT_FOUND);
         }
 
         const detail = await this.detailRepository.create({ type: detailType, name, price, color, dimmensions, img, note });
         if (!detail) {
-            throw new HttpException("Video not found", HttpStatus.NOT_FOUND);
+            throw new HttpException("Detail not found", HttpStatus.NOT_FOUND);
         }
         return await this.detailRepository.save(detail);
     }
@@ -34,17 +39,17 @@ export class DetailsService {
         if (!detail) {
             throw new HttpException("Detail not found", HttpStatus.NOT_FOUND);
         }
-        const { type, name, price, color, dimmensions, img, note } = dto;
+        const { typeId, name, price, color, dimmensions, img, note } = dto;
 
-        // const checkName = await this.getDetailByName(dto.name);
-        // if (checkName) {
-        //     throw new HttpException("Detail with such name already exist", HttpStatus.FORBIDDEN);
-        // }
+        const checkName = await this.getDetailByName(dto.name);
+        if (checkName && detail.id !== checkName.id) {
+            throw new HttpException("Detail with such name already exists", HttpStatus.FORBIDDEN);
+        }
 
         const newDto = { name, price, color, dimmensions, img, note }
         let detailType = detail.type;
-        if (type) {
-            const checkType = await this.typesService.getTypeByName(type);
+        if (typeId) {
+            const checkType = await this.typesService.getTypeById(typeId);
             if (checkType) {
                 detailType = checkType;
             }
@@ -66,7 +71,8 @@ export class DetailsService {
             .getMany();
     }
 
-    async filterByPrice(details: [Detail], min: number, max: number) {
+    async filterByPrice(dto: GetDetailsByPriceDto) {
+        const { details, min, max } = dto;
         return details.filter((el) => {
             if (el.price >= min && el.price <= max) {
                 return el;

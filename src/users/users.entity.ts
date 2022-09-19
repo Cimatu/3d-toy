@@ -16,6 +16,14 @@ export class User {
     @Column({ unique: true })
     username: string;
 
+    // @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
+    // @Column({ unique: true })
+    // password?: string;
+
+    // @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
+    // @Column()
+    // email?: string;
+
     @ApiProperty({ example: 'user', description: 'User role, default: user' })
     @Column({ type: 'enum', enum: Role, default: Role.USER })
     role: Role;

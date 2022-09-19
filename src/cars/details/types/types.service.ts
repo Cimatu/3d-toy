@@ -15,6 +15,10 @@ export class TypesService {
     ) { }
 
     async createType(dto: CreateTypeDto) {
+        const checkName = await this.getTypeByName(dto.name);
+        if (checkName) {
+            throw new HttpException("Type with such name already exists", HttpStatus.FORBIDDEN);
+        }
         return await this.typeRepository.save(dto);
     }
 
@@ -24,8 +28,8 @@ export class TypesService {
             throw new HttpException("Type not found", HttpStatus.NOT_FOUND);
         }
         const checkName = await this.getTypeByName(dto.name);
-        if (checkName) {
-            throw new HttpException("Type with such name already exist", HttpStatus.FORBIDDEN);
+        if (checkName && type.id !== checkName.id) {
+            throw new HttpException("Type with such name already exists", HttpStatus.FORBIDDEN);
         }
 
         await this.typeRepository
@@ -44,13 +48,13 @@ export class TypesService {
             .getOne();
     }
 
-    async getDetailsByTypes(names: string[]) {
+    async getDetailsByTypesIds(ids: number[]) {
         return await Promise.all(
-            names.map(async (name) => {
+            ids.map(async (id) => {
                 return await this.typeRepository
                     .createQueryBuilder('types')
                     .leftJoinAndSelect('types.details', 'details')
-                    .where('types.name = :name', { name })
+                    .where('types.id = :id', { id })
                     .getMany();
             })
         )

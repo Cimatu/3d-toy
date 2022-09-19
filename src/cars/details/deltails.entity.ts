@@ -5,7 +5,6 @@ import { Type } from "./types/types.entity";
 
 
 @Entity('details')
-// @TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Detail {
     @ApiProperty({ example: 1, description: 'Unique identificator' })
     @PrimaryGeneratedColumn()

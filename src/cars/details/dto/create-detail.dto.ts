@@ -2,8 +2,8 @@ import { ApiProperty } from "@nestjs/swagger";
 
 
 export class CreateDetailDto {
-    @ApiProperty({ example: 'spoiler', description: 'Detail type' })
-    type: string;
+    @ApiProperty({ example: 1, description: 'Detail type id' })
+    typeId: number;
 
     @ApiProperty({ example: 'Prime', description: 'Unique detail name' })
     name: string;

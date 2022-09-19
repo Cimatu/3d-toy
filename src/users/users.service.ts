@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CartsService } from 'src/carts/carts.service';
 import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,24 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
         private cartService: CartsService,
     ) { }
+
+    // async signUp(dto: SignUpDto) {
+    //     const { email } = dto;
+    //     const findUser = await this.getUserByEmail(email);
+    //     if (findUser) {
+    //         throw new NotFoundException("Such email already exists");
+    //     }
+
+    //     return await this.userRepository.save(dto);
+    // }
+
+    // async signIn(dto: SignUpDto){
+    //     const { email } = dto;
+    //     const findUser = await this.getUserByEmail(email);
+    //     if (findUser) {
+    //         throw new NotFoundException("Such email already exists");
+    //     }
+    // }
 
     async createUser(dto: CreateUserDto) {
         const { username } = dto;
@@ -24,7 +43,7 @@ export class UsersService {
         if (!user) {
             throw new NotFoundException("Create user error");
         }
-        
+
         const cart = await this.cartService.createCart();
         if (!cart) {
             throw new NotFoundException("Cart wasn't created");
@@ -52,6 +71,13 @@ export class UsersService {
             .where('users.username = :username', { username })
             .getOne();
         return user;
+    }
+
+    async getUserByEmail(email: string) {
+        return await this.userRepository
+            .createQueryBuilder('users')
+            .where('users.email = :email', { email })
+            .getOne();
     }
 
     async getUserById(id: number) {
