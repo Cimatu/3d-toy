@@ -16,7 +16,6 @@ export class UserDataService {
         private eventService: EventsService
     ) { }
 
-
     async createUserData(eventId: number, userDataDto: CreateUserDataDto) {
         const user = await this.userService.getUserById(userDataDto.userId);
         if (!user) {
