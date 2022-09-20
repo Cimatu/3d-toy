@@ -71,18 +71,6 @@ export class DetailsService {
             .getMany();
     }
 
-    async getDetailsByTypesIds(typesIds: number[]) {
-        return await Promise.all(
-            typesIds.map(async (typeId) => {
-                return await this.detailRepository
-                    .createQueryBuilder('details')
-                    .leftJoinAndSelect('types.details', 'details')
-                    .where('details.typeId : typeId', { typeId })
-                    .getMany();
-            })
-        )
-    }
-
     async filterByPrice(dto: GetDetailsByPriceDto) {
         const { details, min, max } = dto;
         return details.filter((el) => {

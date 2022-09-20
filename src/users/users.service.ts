@@ -14,24 +14,6 @@ export class UsersService {
         private cartService: CartsService,
     ) { }
 
-    // async signUp(dto: SignUpDto) {
-    //     const { email } = dto;
-    //     const findUser = await this.getUserByEmail(email);
-    //     if (findUser) {
-    //         throw new NotFoundException("Such email already exists");
-    //     }
-
-    //     return await this.userRepository.save(dto);
-    // }
-
-    // async signIn(dto: SignUpDto){
-    //     const { email } = dto;
-    //     const findUser = await this.getUserByEmail(email);
-    //     if (findUser) {
-    //         throw new NotFoundException("Such email already exists");
-    //     }
-    // }
-
     async createUser(dto: CreateUserDto) {
         const { username } = dto;
         const findUser = await this.getUserByUsername(username);

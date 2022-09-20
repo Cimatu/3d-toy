@@ -16,13 +16,13 @@ export class User {
     @Column({ unique: true })
     username: string;
 
-    // @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
-    // @Column({ unique: true })
-    // password?: string;
+    @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
+    @Column({ unique: true, default: null })
+    email?: string;
 
-    // @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
-    // @Column()
-    // email?: string;
+    @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
+    @Column({ default: null })
+    password?: string;
 
     @ApiProperty({ example: 'user', description: 'User role, default: user' })
     @Column({ type: 'enum', enum: Role, default: Role.USER })

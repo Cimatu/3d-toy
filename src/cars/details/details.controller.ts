@@ -34,15 +34,15 @@ export class DetailsController {
     }
 
     @ApiOperation({ summary: 'Get detail by id' })
-    @ApiResponse({ status: 200, type: [Detail] })
-    @Get('get_by/:id')
+    @ApiResponse({ status: 200, type: Detail })
+    @Get('get_by_id/:id')
     getDetailById(@Param('id') id: number) {
         return this.detailsServie.getDetailById(id);
     }
 
     @ApiOperation({ summary: 'Get detail by name' })
     @ApiResponse({ status: 200, type: Detail })
-    @Get('get_by/:name')
+    @Get('get_by_name/:name')
     getDetailByName(@Param('name') name: string) {
         return this.detailsServie.getDetailByName(name);
     }
@@ -52,13 +52,6 @@ export class DetailsController {
     @Post('filter_by_price')
     filterDetailsByPrice(@Body() dto: GetDetailsByPriceDto) {
         return this.detailsServie.filterByPrice(dto);
-    }
-
-    @ApiOperation({ summary: "Get details by types ids" })
-    @ApiResponse({ status: 200, type: [Detail] })
-    @Post('get_details_by_types_ids')
-    getDetailsByTypesIds(@Body() dto: GetDetailsByTypesIdsDto) {
-        return this.detailsServie.getDetailsByTypesIds(dto.ids);
     }
 
     @ApiOperation({ summary: 'Delete detail by id' })

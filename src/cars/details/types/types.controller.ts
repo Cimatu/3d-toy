@@ -36,7 +36,7 @@ export class TypesController {
 
     @ApiOperation({ summary: 'Get type by name' })
     @ApiResponse({ status: 200, type: Type })
-    @Get('get_by/:name')
+    @Get('get_by_name/:name')
     getTypeByName(@Param('name') name: string) {
         return this.typesServie.getTypeByName(name)
     }
@@ -49,14 +49,14 @@ export class TypesController {
     }
 
     @ApiOperation({ summary: 'Get type by id' })
-    @ApiResponse({ status: 200, type: [Type] })
-    @Get('get_by/:id')
+    @ApiResponse({ status: 200, type: Type })
+    @Get('get_by_id/:id')
     getTypeById(@Param('id') id: number) {
         return this.typesServie.getTypeById(id)
     }
 
     @ApiOperation({ summary: 'Delete type by id' })
-    @ApiResponse({ status: 200, type: [Type] })
+    @ApiResponse({ status: 200, type: Type })
     @Delete('delete/:id')
     deleteTypeById(@Param('id') id: number) {
         return this.typesServie.detleteType(id)
