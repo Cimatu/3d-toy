@@ -13,7 +13,7 @@ export class User {
     id: number;
 
     @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })
-    @Column({ unique: true })
+    @Column({ unique: true, default: null })
     username: string;
 
     @ApiProperty({ example: 'destroyer3000', description: 'Unique username' })

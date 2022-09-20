@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { CartsService } from 'src/carts/carts.service';
 import { User } from './users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignDto } from './dto/sign.dto';
+import { Role } from './role.enum';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +14,14 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
         private cartService: CartsService,
     ) { }
+
+    async createAdmin(dto: SignDto) {
+        const admin = await this.userRepository.create(dto);
+        admin.role = Role.ADMIN;
+        // console.log(admin)
+        return await this.userRepository.save(admin);
+        // return admin;
+    }
 
     async createUser(dto: CreateUserDto) {
         const { username } = dto;

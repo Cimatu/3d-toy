@@ -25,6 +25,7 @@ import { News } from './news/news.entity';
 import NewsModule from './news/news.module';
 import TypesModule from './cars/details/types/types.module';
 import { Type } from './cars/details/types/types.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [],
@@ -42,7 +43,7 @@ import { Type } from './cars/details/types/types.entity';
       database: process.env.POSTGRES_DATABASE,
       entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, Video, News, Type],
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
+      // ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,
@@ -55,7 +56,8 @@ import { Type } from './cars/details/types/types.entity';
     FAQsModule,
     VideoModule,
     NewsModule,
-    TypesModule
+    TypesModule,
+    AuthModule
   ],
 })
 export class AppModule { }
