@@ -20,7 +20,7 @@ export class UsersService {
         admin.role = Role.ADMIN;
         // console.log(admin)
         return await this.userRepository.save(admin);
-        // return admin;
+        // return admin; 76
     }
 
     async createUser(dto: CreateUserDto) {
@@ -81,6 +81,15 @@ export class UsersService {
             throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
         return user;
+    }
+
+    async updatePassword(email, password) {
+        return await this.userRepository
+            .createQueryBuilder()
+            .update(User)
+            .set({ password })
+            .where("email = :email", { email })
+            .execute();
     }
 
     async deteteUserById(id: number) {
