@@ -43,7 +43,6 @@ export class CarsController {
     @ApiResponse({ status: 200 })
     @Delete('delete_by_id/:car_id')
     deleteCar(@Param('car_id') car_id: number) {
-        console.log(car_id)
         return this.carsService.deleteCar(car_id)
     }
 }

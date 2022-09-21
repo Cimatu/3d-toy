@@ -18,9 +18,7 @@ export class UsersService {
     async createAdmin(dto: SignDto) {
         const admin = await this.userRepository.create(dto);
         admin.role = Role.ADMIN;
-        // console.log(admin)
         return await this.userRepository.save(admin);
-        // return admin; 76
     }
 
     async createUser(dto: CreateUserDto) {
