@@ -43,7 +43,7 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.POSTGRES_DATABASE,
       entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, Video, News, Type],
       synchronize: true,
-      // ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,
