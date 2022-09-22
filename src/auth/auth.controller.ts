@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { SignDto } from 'src/users/dto/sign.dto';
+import { SignDto, SignOutDto } from 'src/users/dto/sign.dto';
 import { AuthService } from "./auth.service";
 import { RecoveryDto, SetNewPasswordDto } from './dto/recovery.dto';
 
@@ -24,9 +24,9 @@ export class AuthController {
     }
 
     @ApiOperation({ summary: 'Sign out for admin' })
-    @Get('signout/:userId')
-    signOut(@Param('userId') userId: number) {
-        return this.authService.signOut(userId)
+    @Get('signout')
+    signOut(@Body('userId') dto: SignOutDto) {
+        return this.authService.signOut(dto.token)
     }
 
     @ApiOperation({ summary: 'Sign up for admin' })

@@ -7,3 +7,8 @@ export class SignDto {
     @ApiProperty({example: '12345678', description: 'Unique username'})
     password: string;
 }
+
+export class SignOutDto{
+    @ApiProperty({example: 'lieurhjpervhoiuehjf09q438fq-f98hdq-394f', description: 'Refresh token'})
+    token: string;
+}

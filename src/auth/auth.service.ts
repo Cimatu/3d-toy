@@ -25,31 +25,31 @@ export class AuthService {
 
     async signUp(userDto: SignDto) {
         const candidate = await this.userService.getUserByEmail(userDto.email);
-        console.log(1)
         if (candidate) {
             throw new HttpException('User with such email already exists', HttpStatus.BAD_REQUEST);
         }
-        console.log(2)
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        console.log(3)
         const user = await this.userService.createAdmin({ ...userDto, password: hashPassword });
-        console.log(4)
         const tokens = await this.tokenService.generateTokens(user);
-        console.log(user.id)
         await this.tokenService.saveToken(user.id, tokens.refreshToken);
-        console.log(6)
-        return tokens;
+        return {
+            ...tokens,
+            userId: user.id
+        };
     }
 
     async signIn(userDto: SignDto) {
         const user = await this.validateUser(userDto);
         const tokens = await this.tokenService.generateTokens(user);
         await this.tokenService.saveToken(user.id, tokens.refreshToken);
-        return tokens;
+        return {
+            ...tokens,
+            userId: user.id
+        };
     }
 
-    async signOut(userId: number){
-        return await this.tokenService.deleteTokenByUser(userId)
+    async signOut(token: string) {
+        return await this.tokenService.deleteTokenByUser(token)
     }
 
     private async validateUser(userDto: SignDto) {

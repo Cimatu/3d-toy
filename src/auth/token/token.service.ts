@@ -26,7 +26,6 @@ export class TokenService {
             .createQueryBuilder('tokens')
             .where('tokens.userId = :userId', { userId })
             .getOne();
-        console.log(12)
         if (tokenData) {
             tokenData.refreshToken = refreshToken;
             return await this.tokenRepository.save(tokenData);
@@ -48,9 +47,8 @@ export class TokenService {
     }
 
 
-    async deleteTokenByUser(userId: number) {
-        const token = await this.getTokenByUserId(userId);
-        console.log(token)
+    async deleteTokenByUser(refreshStr: string) {
+        const token = await this.getToken(refreshStr);
         if (!token) {
             throw new HttpException("Token not found", HttpStatus.NOT_FOUND);
         }
