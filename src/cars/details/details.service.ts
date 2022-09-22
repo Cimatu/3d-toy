@@ -105,6 +105,9 @@ export class DetailsService {
 
 
     async getDetailsByType(ids: number[]) {
+        if (ids.length == 0) {
+            return await this.getAllDetails();
+        }
         const details = await Promise.all(
             ids.map(async (typeId) => {
                 return await this.detailRepository
@@ -116,10 +119,6 @@ export class DetailsService {
         let newDetails = [];
         for (let i = 0; i < details.length; i++) {
             newDetails = [...newDetails, ...details[i]]
-        }
-
-        if (newDetails.length == 0) {
-            return await this.getAllDetails();
         }
         return newDetails
     }
