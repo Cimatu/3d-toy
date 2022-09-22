@@ -13,16 +13,16 @@ export class UserDataController {
 
     @ApiOperation({ summary: 'Create user data for form in events' })
     @ApiResponse({ status: 200, type: UserData })
-    @Post('create/:userId')
-    create(@Param('userId') eventId: number, @Body() userDataDto: CreateUserDataDto) {
+    @Post('create/:eventId')
+    create(@Param('eventId') eventId: number, @Body() userDataDto: CreateUserDataDto) {
         return this.userDataService.createUserData(eventId, userDataDto);
     }
 
     @ApiOperation({ summary: 'Get all user data by user id' })
     @ApiResponse({ status: 200, type: [UserData] })
     @Get('get_all_by_user/:userId')
-    getUserDataByUser(@Param('userId') eventId: number) {
-        return this.userDataService.getUserDataByUser(eventId);
+    getUserDataByUser(@Param('userId') userId: number) {
+        return this.userDataService.getUserDataByUser(userId);
     }
 
     @ApiOperation({ summary: 'Get all user data by event id' })
