@@ -54,6 +54,13 @@ export class DetailsController {
         return this.detailsServie.filterByPrice(dto);
     }
 
+    @ApiOperation({ summary: 'Get details catalog by types' })
+    @ApiResponse({ status: 200, type: [Detail] })
+    @Post('get_details_by_types')
+    getDetailsByTypes(@Body() dto: GetDetailsByTypesIdsDto) {
+        return this.detailsServie.getDetailsByType(dto.ids);
+    }
+
     @ApiOperation({ summary: 'Delete detail by id' })
     @ApiResponse({ status: 200, type: [Detail] })
     @Delete('delete/:id')

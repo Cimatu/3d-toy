@@ -49,17 +49,23 @@ export class TypesService {
             .getOne();
     }
 
-    async getDetailsByTypesIds(ids: number[]) {
-        return await Promise.all(
-            ids.map(async (id) => {
-                return await this.typeRepository
-                    .createQueryBuilder('types')
-                    .leftJoinAndSelect('types.details', 'details')
-                    .where('types.id = :id', { id })
-                    .getMany();
-            })
-        )
-    }
+    // async getDetailsByTypesIds(ids: number[]) {
+    //     return await Promise.all(
+    //         ids.map(async (id) => {
+    //             return await this.typeRepository
+    //                 .createQueryBuilder('types')
+    //                 .leftJoinAndSelect('types.details', 'details')
+    //                 .where('types.id = :id', { id })
+    //                 .getMany();
+    //         })
+    //     )
+    //     // let newDetail = []
+    //     // for (let i = 0; i < details.length; i++) {
+    //     //     newDetail = [...details[i]]
+    //     // }
+
+    //     // return newDetail
+    // }
 
     async getTypeById(id: number) {
         return await this.typeRepository

@@ -103,6 +103,27 @@ export class DetailsService {
             .getMany();
     }
 
+
+    async getDetailsByType(ids: number[]) {
+        const details = await Promise.all(
+            ids.map(async (typeId) => {
+                return await this.detailRepository
+                    .createQueryBuilder('details')
+                    .where('details.typeId = :typeId', { typeId })
+                    .getMany();
+            })
+        )
+        let newDetails = [];
+        for (let i = 0; i < details.length; i++) {
+            newDetails = [...newDetails, ...details[i]]
+        }
+
+        if (newDetails.length == 0) {
+            return await this.getAllDetails();
+        }
+        return newDetails
+    }
+
     async deleteDetailById(id: number) {
         const car = this.getDetailById(id);
         if (!car) {
