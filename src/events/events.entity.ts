@@ -23,8 +23,8 @@ export class Event {
 
     @ApiProperty({ example: "https://klike.net/uploads/posts/2019-05/1556708032_1.jpg", description: 'Url to event image' })
     @Column()
-    img: string
+    img: string;
 
     @ManyToOne(() => UserData, (usersData) => usersData.event)
-    usersData: UserData[]
+    usersData: UserData[];
 }

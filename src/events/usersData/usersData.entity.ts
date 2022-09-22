@@ -11,19 +11,19 @@ export class UserData {
     id: number;
 
     @ApiProperty({ example: "Dimasik", description: 'Realy?' })
-    @Column({ default: 0 })
+    @Column({ default: null })
     firstName: string;
 
     @ApiProperty({ example: "Savritsky", description: 'Come on' })
-    @Column({ length: 500 })
+    @Column({ default: null })
     lastName: string;
 
     @ApiProperty({ example: "dimasikgonapivasik@gmail.com", description: 'Bro, r u kidding?' })
-    @Column()
+    @Column({ default: null })
     email: string;
 
     @ApiProperty({ example: "Hello world", description: 'Message user send to event' })
-    @Column()
+    @Column({ default: null })
     message: string;
 
     @ManyToOne(() => User, (user) => user.userData, { onDelete: "CASCADE" })

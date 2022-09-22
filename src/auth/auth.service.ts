@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcryptjs'
 import { UsersService } from "src/users/users.service";
-import { User } from "src/users/users.entity";
 import { SignDto } from "src/users/dto/sign.dto";
 import * as nodemailer from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { TokenService } from "./token/token.service";
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -19,29 +18,38 @@ const transporter = nodemailer.createTransport({
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UsersService,
-        private jwtService: JwtService) { }
+    constructor(
+        private tokenService: TokenService,
+        private userService: UsersService,
+    ) { }
 
     async signUp(userDto: SignDto) {
         const candidate = await this.userService.getUserByEmail(userDto.email);
+        console.log(1)
         if (candidate) {
             throw new HttpException('User with such email already exists', HttpStatus.BAD_REQUEST);
         }
+        console.log(2)
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.userService.createAdmin({ ...userDto, password: hashPassword })
-        return this.generateToken(user)
+        console.log(3)
+        const user = await this.userService.createAdmin({ ...userDto, password: hashPassword });
+        console.log(4)
+        const tokens = await this.tokenService.generateTokens(user);
+        console.log(user.id)
+        await this.tokenService.saveToken(user.id, tokens.refreshToken);
+        console.log(6)
+        return tokens;
     }
 
     async signIn(userDto: SignDto) {
-        const user = await this.validateUser(userDto)
-        return this.generateToken(user)
+        const user = await this.validateUser(userDto);
+        const tokens = await this.tokenService.generateTokens(user);
+        await this.tokenService.saveToken(user.id, tokens.refreshToken);
+        return tokens;
     }
 
-    private async generateToken(user: User) {
-        const payload = { email: user.email, id: user.id, role: user.role }
-        return {
-            token: this.jwtService.sign(payload)
-        }
+    async signOut(userId: number){
+        return await this.tokenService.deleteTokenByUser(userId)
     }
 
     private async validateUser(userDto: SignDto) {
@@ -89,13 +97,5 @@ export class AuthService {
 
         const hashPassword = await bcrypt.hash(password1, 5);
         return await this.userService.updatePassword(email, hashPassword)
-    }
-
-    // async logout(refreshStr: string): Promise<void> {
-    //     const refreshToken = await this
-    // }
-
-    private async removeToken() {
-
     }
 }

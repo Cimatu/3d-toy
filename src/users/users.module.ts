@@ -7,13 +7,14 @@ import { Car } from 'src/cars/cars.entity';
 import { Cart } from 'src/carts/carts.entity';
 import { Order } from 'src/orders/orders.entity';
 import { User } from './users.entity';
+import Token from 'src/auth/token/token.entity';
 
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
-    TypeOrmModule.forFeature([User, Car, Cart, Order]),
+    TypeOrmModule.forFeature([User, Car, Cart, Order, Token]),
     CartsModule
   ],
   exports: [

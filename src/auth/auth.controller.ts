@@ -1,7 +1,7 @@
-import {Body, Controller, Post} from '@nestjs/common';
-import {ApiOperation, ApiTags} from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { SignDto } from 'src/users/dto/sign.dto';
-import {AuthService} from "./auth.service";
+import { AuthService } from "./auth.service";
 import { RecoveryDto, SetNewPasswordDto } from './dto/recovery.dto';
 
 
@@ -9,18 +9,24 @@ import { RecoveryDto, SetNewPasswordDto } from './dto/recovery.dto';
 @Controller('auth')
 export class AuthController {
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService) { }
 
     @ApiOperation({ summary: 'Sign in for admin' })
     @Post('signin')
-    login(@Body() userDto: SignDto) {
+    signIn(@Body() userDto: SignDto) {
         return this.authService.signIn(userDto)
     }
 
     @ApiOperation({ summary: 'Sign up for admin' })
     @Post('signup')
-    registration(@Body() userDto: SignDto) {
+    signUp(@Body() userDto: SignDto) {
         return this.authService.signUp(userDto)
+    }
+
+    @ApiOperation({ summary: 'Sign out for admin' })
+    @Get('signout/:userId')
+    signOut(@Param('userId') userId: number) {
+        return this.authService.signOut(userId)
     }
 
     @ApiOperation({ summary: 'Sign up for admin' })

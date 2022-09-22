@@ -42,4 +42,5 @@ export class User {
 
     @OneToMany(() => UserData, (userData) => userData.user)
     userData: UserData[];
+    
 }
