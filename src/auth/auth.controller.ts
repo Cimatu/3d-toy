@@ -24,7 +24,7 @@ export class AuthController {
     }
 
     @ApiOperation({ summary: 'Sign out for admin' })
-    @Get('signout')
+    @Post('signout')
     signOut(@Body() dto: SignOutDto) {
         return this.authService.signOut(dto.token)
     }
