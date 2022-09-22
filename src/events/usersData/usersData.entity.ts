@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/users/users.entity";
 import { Event } from "../events.entity";
@@ -27,8 +27,13 @@ export class UserData {
     message: string;
 
     @ManyToOne(() => User, (user) => user.userData, { onDelete: "CASCADE" })
+    @JoinColumn()
     user: User;
 
+    @ApiProperty({ example: 3, description: 'User id' })
+    @Column({ nullable: false })
+    userId: number;
+
     @ManyToOne(() => Event, (event) => event.usersData, { onDelete: "CASCADE" })
-    event: Event
+    event: Event;
 }

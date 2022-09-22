@@ -15,6 +15,5 @@ import { UserData } from './usersData.entity';
         UsersModule,
         EventsModule
     ],
-
 })
 export default class UserDataModule { }

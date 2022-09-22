@@ -37,7 +37,7 @@ export class UserDataService {
         return await this.userDataRepository
             .createQueryBuilder('user-data')
             .leftJoinAndSelect('user-data.event', 'event')
-            .where('user-data.user = :user', { user })
+            .where('user-data.userId = :userId', { userId })
             .getMany()
     }
 
@@ -49,7 +49,7 @@ export class UserDataService {
         return await this.userDataRepository
             .createQueryBuilder('user-data')
             .leftJoinAndSelect('user-data.user', 'user')
-            .where('user-data.event = :event', { event })
+            .where('user-data.eventId = :eventId', { eventId: event.id })
             .getMany()
     }
 }

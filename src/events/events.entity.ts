@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { UserData } from "./usersData/usersData.entity";
 
@@ -25,6 +25,7 @@ export class Event {
     @Column()
     img: string;
 
-    @ManyToOne(() => UserData, (usersData) => usersData.event)
+    @OneToMany(() => UserData, (usersData) => usersData.event)
+    @JoinTable()
     usersData: UserData[];
 }
