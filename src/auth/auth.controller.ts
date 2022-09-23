@@ -35,7 +35,7 @@ export class AuthController {
         return this.authService.restorePassword(recoveryDto.email, recoveryDto.link)
     }
 
-    @ApiOperation({ summary: 'Sign up for admin' })
+    @ApiOperation({ summary: 'Password recovery' })
     @Post('set_new_password')
     setNewPassword(@Body() recoveryDto: SetNewPasswordDto) {
         return this.authService.setNewPassword(recoveryDto)

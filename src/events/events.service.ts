@@ -18,7 +18,7 @@ export class EventsService {
     }
 
     async updateEventById(id: number, eventData: UpdateEventDto) {
-        const {name, description, date, img } = eventData;
+        const { name, description, date, img } = eventData;
 
         const event = await this.getEventById(id);
         if (!event) {
@@ -46,10 +46,10 @@ export class EventsService {
         }
         await this.eventsRepository.delete(id);
         event = await this.getEventById(id);
-        if(!event){
-            return {message: "Event was successfuly deleted"}
-        }else{
-            return {message: "Event wasn't deleted"}
+        if (!event) {
+            return { message: "Event was successfuly deleted" }
+        } else {
+            return { message: "Event wasn't deleted" }
         }
     }
 
@@ -58,6 +58,25 @@ export class EventsService {
             .createQueryBuilder('events')
             .leftJoinAndSelect('events.usersData', 'usersData')
             .getMany();
+    }
+
+    async getAllEventsWithUserId(userId: number) {
+        const events = await this.getAllEvents();
+        let array = await Promise.all(
+            events.map(async (event) => {
+                if (event.usersData.length == 0) {
+                    const userData = event.usersData
+                    return { event, userData };
+                }
+                for (let i = 0; i < event.usersData.length; i++) {
+                    if (event.usersData[i].userId == userId) {
+                        const userData = event.usersData[i]
+                        return { event, userData };
+                    }
+                }
+            })
+        )
+        return array
     }
 
     async getEventById(id: number) {
