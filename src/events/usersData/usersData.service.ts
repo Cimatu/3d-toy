@@ -16,16 +16,21 @@ export class UserDataService {
         private eventService: EventsService
     ) { }
 
-    async createUserData(eventId: number, userDataDto: CreateUserDataDto) {
-        const user = await this.userService.getUserById(userDataDto.userId);
-        if (!user) {
-            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
-        }
+    async createUserData(eventId: number, dto: CreateUserDataDto) {
         const event = await this.eventService.getEventById(eventId);
         if (!event) {
             throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
         }
-        const userData = await this.userDataRepository.create({ ...userDataDto, user, event })
+        for (let i = 0; i < event.usersData.length; i++) {
+            if (event.usersData[i].userId == dto.userId){
+                throw new HttpException("User already registred on this event", HttpStatus.FORBIDDEN);
+            }
+        }
+        const user = await this.userService.getUserById(dto.userId);
+        if (!user) {
+            throw new HttpException("User not found", HttpStatus.NOT_FOUND);
+        }
+        const userData = await this.userDataRepository.create({ ...dto, user, event })
         return await this.userDataRepository.save(userData);
     }
 
