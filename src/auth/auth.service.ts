@@ -48,8 +48,8 @@ export class AuthService {
         };
     }
 
-    async signOut(token: string) {
-        return await this.tokenService.deleteTokenByUser(token)
+    async signOut(refreshToken: string) {
+        return await this.tokenService.deleteTokenByUser(refreshToken)
     }
 
     private async validateUser(userDto: SignDto) {
