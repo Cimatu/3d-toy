@@ -13,14 +13,14 @@ export class AuthController {
 
     @ApiOperation({ summary: 'Sign in for admin' })
     @Post('signin')
-    signIn(@Body() userDto: SignDto) {
-        return this.authService.signIn(userDto)
+    signIn(@Body() dto: SignDto) {
+        return this.authService.signIn(dto)
     }
 
     @ApiOperation({ summary: 'Sign up for admin' })
     @Post('signup')
-    signUp(@Body() userDto: SignDto) {
-        return this.authService.signUp(userDto)
+    signUp(@Body() dto: SignDto) {
+        return this.authService.signUp(dto)
     }
 
     @ApiOperation({ summary: 'Sign out for admin' })
@@ -31,13 +31,13 @@ export class AuthController {
 
     @ApiOperation({ summary: 'Sign up for admin' })
     @Post('restore_password')
-    restorePassword(@Body() recoveryDto: RecoveryDto) {
-        return this.authService.restorePassword(recoveryDto.email, recoveryDto.link)
+    restorePassword(@Body() dto: RecoveryDto) {
+        return this.authService.restorePassword(dto.email, dto.link)
     }
 
     @ApiOperation({ summary: 'Password recovery' })
     @Post('set_new_password')
-    setNewPassword(@Body() recoveryDto: SetNewPasswordDto) {
-        return this.authService.setNewPassword(recoveryDto)
+    setNewPassword(@Body() dto: SetNewPasswordDto) {
+        return this.authService.setNewPassword(dto)
     }
 }

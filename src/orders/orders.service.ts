@@ -15,8 +15,8 @@ export class OrdersService {
     ) { }
 
 
-    async createOrder(orderDto: CreateOrderDto) {
-        const { country, city, cart } = orderDto;
+    async createOrder(dto: CreateOrderDto) {
+        const { country, city, cart } = dto;
         const { cartItems, quantity, total } = cart;
         const order = await this.orderRepository.create({ country, city, cartItems, quantity, total, user: cart.user })
         return await this.orderRepository.save(order);

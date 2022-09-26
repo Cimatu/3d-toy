@@ -20,15 +20,15 @@ export class EventController {
     @ApiOperation({ summary: 'Create event' })
     @ApiResponse({ status: 200, type: Event })
     @Post('create')
-    create(@Body() eventDto: CreateEventDto) {
-        return this.eventsService.createEvent(eventDto);
+    create(@Body() dto: CreateEventDto) {
+        return this.eventsService.createEvent(dto);
     }
 
     @ApiOperation({ summary: 'Update event by id' })
     @ApiResponse({ status: 200, type: Event })
     @Post('update/:id')
-    update(@Param('id') id: number, @Body() eventDto: UpdateEventDto) {
-        return this.eventsService.updateEventById(id, eventDto);
+    update(@Param('id') id: number, @Body() dto: UpdateEventDto) {
+        return this.eventsService.updateEventById(id, dto);
     }
 
     @ApiOperation({ summary: 'Delete event by id' })

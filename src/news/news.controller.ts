@@ -18,15 +18,15 @@ export class NewsController {
     @ApiOperation({ summary: 'Create news' })
     @ApiResponse({ status: 200, type: News })
     @Post('create')
-    create(@Body() newsDto: CreateNewsDto) {
-        return this.newsService.createNews(newsDto);
+    create(@Body() dto: CreateNewsDto) {
+        return this.newsService.createNews(dto);
     }
 
     @ApiOperation({ summary: 'Update news by id' })
     @ApiResponse({ status: 200, type: News })
     @Post('update/:id')
-    update(@Param('id') id: number, @Body() newsDto: CreateNewsDto) {
-        return this.newsService.updateNewsById(id, newsDto);
+    update(@Param('id') id: number, @Body() dto: CreateNewsDto) {
+        return this.newsService.updateNewsById(id, dto);
     }
 
     @ApiOperation({ summary: 'Delete news by id' })

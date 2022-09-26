@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DetailsService } from './details.service';
 import { Detail } from './deltails.entity';
@@ -15,8 +15,8 @@ export class DetailsController {
     @ApiOperation({ summary: 'Create detail' })
     @ApiResponse({ status: 200, type: Detail })
     @Post('create')
-    create(@Body() detailDto: CreateDetailDto) {
-        return this.detailsServie.createDetail(detailDto);
+    create(@Body() dto: CreateDetailDto) {
+        return this.detailsServie.createDetail(dto);
     }
 
     @ApiOperation({ summary: 'Update detail by id' })
@@ -31,6 +31,14 @@ export class DetailsController {
     @Get('get_all')
     getAllDetails() {
         return this.detailsServie.getAllDetails()
+    }
+
+    @ApiOperation({ summary: 'Get details catalog with pagination' })
+    @ApiResponse({ status: 200, type: [Detail] })
+    @Get()
+    getPaginateDetails(@Query('take') take: number = 10, @Query('skip') skip: number = 0) {
+        take = take > 20 ? 20 : take;
+        return this.detailsServie.getDetailsWithPagination(take, skip);
     }
 
     @ApiOperation({ summary: 'Get detail by id' })

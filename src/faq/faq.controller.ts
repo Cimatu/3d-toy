@@ -19,15 +19,15 @@ export class FAQsController {
     @ApiOperation({ summary: 'Create FAQ' })
     @ApiResponse({ status: 200, type: FAQ })
     @Post('create')
-    create(@Body() faqDto: CreateFaqDto) {
-        return this.faqService.createFAQ(faqDto);
+    create(@Body() dto: CreateFaqDto) {
+        return this.faqService.createFAQ(dto);
     }
 
     @ApiOperation({ summary: 'Update FAQ by id' })
     @ApiResponse({ status: 200, type: FAQ })
     @Post('update/:id')
-    update(@Param('id') id: number, @Body() faqDto: CreateFaqDto) {
-        return this.faqService.updateFAQById(id, faqDto);
+    update(@Param('id') id: number, @Body() dto: CreateFaqDto) {
+        return this.faqService.updateFAQById(id, dto);
     }
 
     @ApiOperation({ summary: 'Delete FAQ by id' })

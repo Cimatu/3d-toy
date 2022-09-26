@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { from } from 'rxjs';
 import { Repository } from 'typeorm';
 import { Detail } from './deltails.entity';
 import { CreateDetailDto } from './dto/create-detail.dto';
@@ -103,6 +104,11 @@ export class DetailsService {
             .getMany();
     }
 
+    async getDetailsWithPagination(take: number = 10, skip: number = 0) {
+        return from(
+            this.detailRepository.findAndCount({ take, skip }).then((data) => data)
+        );
+    }
 
     async getDetailsByType(ids: number[]) {
         if (ids.length == 0) {

@@ -14,7 +14,7 @@ export class OrdersController {
     @ApiOperation({ summary: 'Order creation' })
     @ApiResponse({ status: 200, type: Order })
     @Post('create')
-    create(@Body() orderDto: CreateOrderDto) {
-        return this.ordersService.createOrder(orderDto);
+    create(@Body() dto: CreateOrderDto) {
+        return this.ordersService.createOrder(dto);
     }
 }
