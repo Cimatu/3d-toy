@@ -30,7 +30,7 @@ export class DetailsController {
     @ApiResponse({ status: 200, type: [Detail] })
     @Get('get_all')
     getAllDetails() {
-        return this.detailsServie.getAllDetails()
+        return this.detailsServie.getAllDetails();
     }
 
     @ApiOperation({ summary: 'Get details catalog with pagination' })
