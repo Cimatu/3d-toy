@@ -36,7 +36,10 @@ export class DetailsController {
     @ApiOperation({ summary: 'Get details catalog with pagination' })
     @ApiResponse({ status: 200, type: [Detail] })
     @Get()
-    getPaginateDetails(@Query('take') take: number = 10, @Query('skip') skip: number = 0) {
+    getPaginateDetails(
+        @Query('take') take: number = 10,
+        @Query('skip') skip: number = 0
+    ) {
         take = take > 20 ? 20 : take;
         return this.detailsServie.getDetailsWithPagination(take, skip);
     }
@@ -67,6 +70,17 @@ export class DetailsController {
     @Post('get_details_by_types')
     getDetailsByTypes(@Body() dto: GetDetailsByTypesIdsDto) {
         return this.detailsServie.getDetailsByType(dto.ids);
+    }
+
+    @ApiOperation({ summary: 'Get details catalog by types with pagintaion' })
+    @ApiResponse({ status: 200, type: [Detail] })
+    @Post('filter_with_pagintaion')
+    getDetailsByTypesWithPagination(
+        @Query('take') take: number = 10,
+        @Query('skip') skip: number = 0,
+        @Body() dto: GetDetailsByTypesIdsDto
+    ) {
+        return this.detailsServie.getDetailsByTypeWithPagination(take, skip, dto.ids);
     }
 
     @ApiOperation({ summary: 'Delete detail by id' })

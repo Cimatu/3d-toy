@@ -21,6 +21,12 @@ export class UsersService {
         return await this.userRepository.save(admin);
     }
 
+    async updateEmail(dto: {email: string, id: number}){
+        const user = await this.getUserById(dto.id);
+        user.email = dto.email;
+        return await this.userRepository.save(user);
+    }
+
     async createUser(dto: CreateUserDto) {
         const { username } = dto;
         const findUser = await this.getUserByUsername(username);

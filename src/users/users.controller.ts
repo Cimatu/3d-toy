@@ -17,6 +17,13 @@ export class UsersController {
         return this.usersService.createUser(dto);
     }
 
+    @ApiOperation({ summary: 'User update' })
+    @ApiResponse({ status: 200, type: User })
+    @Post('update')
+    update(@Body() dto: { email: string, id: number }) {
+        return this.usersService.updateEmail(dto)
+    }
+
     @ApiOperation({ summary: `Get list of all users` })
     @ApiResponse({ status: 200, type: [User] })
     @Get('get_all')

@@ -129,6 +129,21 @@ export class DetailsService {
         return newDetails
     }
 
+
+    async getDetailsByTypeWithPagination(take: number = 10, skip: number = 0, ids: number[]) {
+        if (ids.length == 0) {
+            return await this.getAllDetails();
+        }
+        const data = await Promise.all(
+            ids.map(async (typeId) => {
+                return await
+                    this.detailRepository
+                        .findAndCount({ where: { typeId }, relations: ['type'], take, skip }).then(([details]) => details)
+            })
+        )
+        return data
+    }
+
     async deleteDetailById(id: number) {
         const car = this.getDetailById(id);
         if (!car) {
