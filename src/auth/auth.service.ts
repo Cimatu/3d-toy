@@ -61,12 +61,22 @@ export class AuthService {
         throw new UnauthorizedException({ message: 'Incorrect email or passwrod' })
     }
 
-    async restorePassword(email: string, recoveryLink: string) {
+    async restorePassword(email: string, link: string) {
+        link = link || 'https://cars-3d.herokuapp.com/restore-password';
+        console.log(link)
         const user = await this.userService.getUserByEmail(email);
         if (!user) {
             throw new HttpException('User with such email not found', HttpStatus.BAD_REQUEST);
         }
-        return await this.sendRecoveryEmail(email, recoveryLink)
+        const payload = {
+            email,
+            password: user.password
+        };
+        const secret = process.env.JWT_ACCESS_SECRET + user.password;
+        const token = await this.tokenService.generateLink(payload, secret)
+        const recoverLink = `${link}/${user.id}/${token}`;
+        console.log(recoverLink)
+        return await this.sendRecoveryEmail(email, recoverLink)
     }
 
     async sendRecoveryEmail(to: string, link: string) {
@@ -85,17 +95,22 @@ export class AuthService {
         })
     }
 
-    async setNewPassword(dto) {
-        const { email, password1, password2 } = dto;
-        const user = await this.userService.getUserByEmail(email);
+    async setNewPassword(id: number, token: string, dto) {
+        const { password1, password2 } = dto;
+        const user = await this.userService.getUserById(id);
         if (!user) {
             throw new HttpException('User with such email not found', HttpStatus.BAD_REQUEST);
+        }
+        const secret = process.env.JWT_ACCESS_SECRET + user.password;
+        const checkPayload = this.tokenService.validateLink(token, secret)
+        if(!checkPayload){
+            throw new HttpException('Wrong user data', HttpStatus.BAD_REQUEST);
         }
         if (password1 !== password2) {
             throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
         }
 
         const hashPassword = await bcrypt.hash(password1, 5);
-        return await this.userService.updatePassword(email, hashPassword)
+        return await this.userService.updatePassword(user.email, hashPassword)
     }
 }

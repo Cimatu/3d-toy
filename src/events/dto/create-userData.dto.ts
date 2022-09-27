@@ -4,10 +4,6 @@ export class CreateUserDataDto {
     @ApiProperty({ example: 1, description: 'User id' })
     userId: number;
 
-    fields: Fields
-}
-
-class Fields {
     @ApiProperty({ example: "Dimasik", description: 'Realy?' })
     firstName: string;
 
@@ -20,3 +16,4 @@ class Fields {
     @ApiProperty({ example: "Hello world", description: 'Message user send to event' })
     message: string;
 }
+

@@ -21,6 +21,10 @@ export class TokenService {
         }
     }
 
+    async generateLink(payload: { email: string, password: string }, secret: string): Promise<string> {
+        return this.jwtService.sign(payload, { secret, expiresIn: '15m' });
+    }
+
     async saveToken(userId: number, refreshToken: string) {
         const tokenData = await this.tokenRepository
             .createQueryBuilder('tokens')
@@ -76,5 +80,9 @@ export class TokenService {
 
     async validateRefreshToken(token: string) {
         return await this.jwtService.verify(token, { secret: `${process.env.JWT_REFRESH_SECRET}` });
+    }
+
+    async validateLink(token: string, secret: string) {
+        return await this.jwtService.verify(token, { secret: secret })
     }
 }

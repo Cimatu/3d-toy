@@ -11,14 +11,7 @@ import { TokenModule } from './token/token.module';
   imports: [
     TokenModule,
     UsersModule,
-    // forwardRef(() => UsersModule),
-    // forwardRef(() => TokenModule),
-    JwtModule.register({
-      secret: process.env.PRIVATE_KEY || 'SECRET',
-      signOptions: {
-        expiresIn: '24h'
-      }
-    }),
+    JwtModule
   ],
   exports: [
     AuthService,

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { SignDto, SignOutDto } from 'src/users/dto/sign.dto';
 import { AuthService } from "./auth.service";
@@ -37,7 +37,11 @@ export class AuthController {
 
     @ApiOperation({ summary: 'Password recovery' })
     @Post('set_new_password')
-    setNewPassword(@Body() dto: SetNewPasswordDto) {
-        return this.authService.setNewPassword(dto)
+    setNewPassword(
+        @Query('id') id: number,
+        @Query('token') token: string,
+        @Body() dto: SetNewPasswordDto
+    ) {
+        return this.authService.setNewPassword(id, token, dto)
     }
 }
