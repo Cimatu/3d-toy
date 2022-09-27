@@ -106,7 +106,7 @@ export class DetailsService {
 
     async getDetailsWithPagination(take: number = 10, skip: number = 0) {
         return from(
-            this.detailRepository.findAndCount({ take, skip }).then((data) => data)
+            this.detailRepository.findAndCount({ relations: ['type'], take, skip }).then((data) => data)
         );
     }
 
