@@ -9,6 +9,7 @@ import { Detail } from 'src/cars/details/deltails.entity';
 import { User } from 'src/users/users.entity';
 import { CartItem } from './cart-item/cart-item.entity';
 import { Cart } from './carts.entity';
+import UsersModule from 'src/users/users.module';
 
 
 @Module({
@@ -17,7 +18,7 @@ import { Cart } from './carts.entity';
   imports: [
     TypeOrmModule.forFeature([Cart, CartItem, User, Car, Detail]),
     DetailsModule,
-    CartItemModule
+    CartItemModule,
   ],
   exports: [
     CartsService

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Detail } from 'src/cars/details/deltails.entity';
@@ -14,7 +14,12 @@ export class CartItemService {
     ) { }
 
     async createCartItem(detail: Detail) {
-        const item = await this.cartItemRepository.create({ quantity: 1, detail: [detail] })
+        const checkItem = this.getCartItemByDetailId(detail.id);
+        if(checkItem){
+            throw new HttpException("Cart item with such detail already exists", HttpStatus.FORBIDDEN);
+        }
+        const item = await this.cartItemRepository.create({ quantity: 1, total: detail.price, detail })
+
         return await this.cartItemRepository.save(item);
     }
 
@@ -43,6 +48,22 @@ export class CartItemService {
             .createQueryBuilder('cartItem')
             .leftJoinAndSelect('cartItem.detail', 'detail')
             .where('cartItem.id = :id', { id })
+            .getOne();
+    }
+
+    async getCartItemsByCartID(cartId: number) {
+        return await this.cartItemRepository
+            .createQueryBuilder('cartItem')
+            .leftJoinAndSelect('cartItem.detail', 'detail')
+            .where('cartItem.cartId = :cartId', { cartId })
+            .getMany();
+    }
+
+    async getCartItemByDetailId(detailId: number){
+        return await this.cartItemRepository
+            .createQueryBuilder('cartItem')
+            .leftJoinAndSelect('cartItem.detail', 'detail')
+            .where('cartItem.detailId = :detailId', { detailId })
             .getOne();
     }
 }

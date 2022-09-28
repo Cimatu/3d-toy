@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { DetailsService } from 'src/cars/details/details.service';
 import { CartItemService } from './cart-item/cart-item.service';
 import { Cart } from './carts.entity';
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/users.entity';
 
 
 @Injectable()
@@ -13,26 +15,26 @@ export class CartsService {
         @InjectRepository(Cart)
         private readonly cartRepository: Repository<Cart>,
         private detailsService: DetailsService,
-        private cartItemService: CartItemService
+        private cartItemService: CartItemService,
     ) { }
 
     async createCart() {
         return await this.cartRepository.save({});
     }
 
-    async updateCart(userId: number, details: InterfaceDetail[]) {
+    async addCarToCart(userId: number, detailsIds: number[]) {
         const cart = await this.getCartByUserId(userId)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
 
         const detailsObjs = await Promise.all(
-            details.map(async (el) => await this.detailsService.getDetailByName(el.name))
+            detailsIds.map(async (el) => await this.detailsService.getDetailById(el))
         );
+
         if (!detailsObjs.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
-
         const cartItems = await Promise.all(
             cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
         );
@@ -40,24 +42,56 @@ export class CartsService {
         for (let i = 0; i < detailsObjs.length; i++) {
             let flag = false;
             for (let j = 0; j < cartItems.length; j++) {
-                if (detailsObjs[i].id === cartItems[j].detail[0].id) {
+                if (detailsObjs[i].id === cartItems[j].detail.id) {
                     await this.cartItemService.addQuantity(cartItems[j].id);
                     flag = true;
                     break;
-                    //количество увеличивается на 1 если id предмета в корзине
-                    //и добавляемого предмета совпадает
                 }
             }
-            //добавляемый предмет добавляется в массив с новым id
             if (!flag) {
                 const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i]);
-                cart.cartItems = [...cart.cartItems, newCartItem]
+                cart.cartItems = [...cart.cartItems, newCartItem];
             }
-
         }
+        cart.total = await this.setTotal(cart);
+        cart.quantity = await this.setQuatity(cart);
+        await this.cartRepository.save(cart);
 
-        return await this.cartRepository.save(cart)
+        return await this.getCartById(cart.id);
     }
+
+    async addToCart(userId: number, detailId: number) {
+        const cart = await this.getCartByUserId(userId);
+        if (!cart) {
+            throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
+        }
+        const detail = await this.detailsService.getDetailById(detailId);
+        if (!detail) {
+            throw new HttpException("No changes", HttpStatus.NOT_FOUND);
+        }
+        const newCartItem = await this.cartItemService.createCartItem(detail);
+        cart.cartItems = [...cart.cartItems, newCartItem];
+        cart.total = await this.setTotal(cart);
+        cart.quantity = await this.setQuatity(cart);
+
+        return await this.cartRepository.save(cart);
+    }
+
+    private async setTotal(cart: Cart) {
+        let total = 0;
+        for (let i = 0; i < cart.cartItems.length; i++) {
+            total += cart.cartItems[i].total;
+        }
+        return total;
+    }
+    private async setQuatity(cart: Cart) {
+        let quantity = 0;
+        for (let i = 0; i < cart.cartItems.length; i++) {
+            quantity += cart.cartItems[i].quantity;
+        }
+        return quantity;
+    }
+
 
     async deleteFromCart(userId: number, details: InterfaceDetail[]) {
         const cart = await this.getCartByUserId(userId)
@@ -102,5 +136,11 @@ export class CartsService {
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
             .where('carts.id = :id', { id })
             .getOne();
+    }
+
+    async getAll() {
+        return await this.cartRepository
+            .createQueryBuilder('carts')
+            .getMany();
     }
 }

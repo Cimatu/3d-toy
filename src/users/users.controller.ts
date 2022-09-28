@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
@@ -40,7 +40,7 @@ export class UsersController {
 
     @ApiOperation({ summary: `Get user by unique username` })
     @ApiResponse({ status: 200 })
-    @Get('delete_by_id/:user_id')
+    @Delete('delete_by_id/:user_id')
     deleteUserById(@Param('user_id') user_id: number) {
         return this.usersService.deteteUserById(user_id);
     }

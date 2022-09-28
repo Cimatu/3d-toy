@@ -18,9 +18,12 @@ export class Cart {
     @Column({ default: 0 })
     quantity: number;
 
-    @OneToOne(() => User, {onDelete: "CASCADE"})
+    @OneToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn()
     user: User;
+
+    // @Column()
+    // userId: number;
 
     @ApiProperty({ description: 'Array with all details in the cart' })
     @OneToMany(() => CartItem, cartItem => cartItem.cart)

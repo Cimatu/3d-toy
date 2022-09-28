@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { Cart } from "../carts.entity";
 import { Detail } from "src/cars/details/deltails.entity";
@@ -28,7 +28,7 @@ export class CartItem {
     order: Order
 
     @ApiProperty({ description: 'Array with all details in the cart' })
-    @ManyToMany(() => Detail)
-    @JoinTable()
-    detail: Detail[]
+    @ManyToOne(() => Detail)
+    @JoinColumn()
+    detail: Detail;
 }
