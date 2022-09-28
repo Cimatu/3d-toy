@@ -74,7 +74,7 @@ export class DetailsController {
 
     @ApiOperation({ summary: 'Get details catalog by types with pagintaion' })
     @ApiResponse({ status: 200, type: [Detail] })
-    @Post('filter_with_pagintaion')
+    @Post(' filter_with_pagination')
     getDetailsByTypesWithPagination(
         @Query('take') take: number = 10,
         @Query('skip') skip: number = 0,
