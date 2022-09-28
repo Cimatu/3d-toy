@@ -129,19 +129,36 @@ export class DetailsService {
         return newDetails
     }
 
+    async paginate(take: number, skip: number, array) {
+        const newArray = [];
+        for (let i = Number(skip); i < Number(take) + i; i++) {
+            if (array[i] == null) {
+                break;
+            }
+            newArray.push(array[i])
+        }
+        return newArray;
+    }
 
     async getDetailsByTypeWithPagination(take: number = 10, skip: number = 0, ids: number[]) {
         if (ids.length == 0) {
-            return await this.getAllDetails();
+            return await this.getDetailsWithPagination(take, skip);
         }
         const data = await Promise.all(
             ids.map(async (typeId) => {
-                return await
-                    this.detailRepository
-                        .findAndCount({ where: { typeId }, relations: ['type'], take, skip }).then(([details]) => details)
+                return await this.detailRepository
+                    .createQueryBuilder('details')
+                    .where('details.typeId = :typeId', { typeId })
+                    .getMany();
             })
         )
-        return data
+
+        let newDetails = [];
+        for (let i = 0; i < data.length; i++) {
+            newDetails = [...newDetails, ...data[i]]
+        }
+
+        return await this.paginate(take, skip, newDetails)
     }
 
     async deleteDetailById(id: number) {
