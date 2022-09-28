@@ -17,26 +17,19 @@ export class EventsService {
         return await this.eventsRepository.save(dto);
     }
 
-    async updateEventById(id: number, eventData: UpdateEventDto) {
-        const { name, description, date, img } = eventData;
-
+    async updateEventById(id: number, dto: UpdateEventDto) {
         const event = await this.getEventById(id);
         if (!event) {
             throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
         }
-        if (name) {
-            event.name = eventData.name;
-        }
-        if (description) {
-            event.description = eventData.description;
-        }
-        if (img) {
-            event.img = eventData.img;
-        }
-        if (date) {
-            event.date = eventData.date;
-        }
-        return await this.eventsRepository.save(event);
+        await this.eventsRepository
+            .createQueryBuilder()
+            .update(Event)
+            .set({ ...dto })
+            .where("id = :id", { id })
+            .execute();
+
+        return await this.getEventById(id)
     }
 
     async deleteEventById(id: number) {

@@ -14,7 +14,6 @@ export class OrdersService {
         private userService: UsersService
     ) { }
 
-
     async createOrder(dto: CreateOrderDto) {
         const { country, city, cart } = dto;
         const { cartItems, quantity, total } = cart;

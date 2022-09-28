@@ -131,13 +131,12 @@ export class DetailsService {
 
     async paginate(take: number, skip: number, array) {
         const newArray = [];
-        for (let i = Number(skip); i < Number(take) + i; i++) {
+        for (let i = Number(skip); i < Number(take) + Number(skip); i++) {
             if (array[i] == null) {
                 break;
             }
             newArray.push(array[i])
         }
-
         return newArray;
     }
 
