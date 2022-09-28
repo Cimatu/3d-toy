@@ -137,6 +137,7 @@ export class DetailsService {
             }
             newArray.push(array[i])
         }
+
         return newArray;
     }
 
@@ -148,6 +149,7 @@ export class DetailsService {
             ids.map(async (typeId) => {
                 return await this.detailRepository
                     .createQueryBuilder('details')
+                    .leftJoinAndSelect('details.type', 'type')
                     .where('details.typeId = :typeId', { typeId })
                     .getMany();
             })
@@ -157,8 +159,10 @@ export class DetailsService {
         for (let i = 0; i < data.length; i++) {
             newDetails = [...newDetails, ...data[i]]
         }
+        const length = newDetails.length;
+        const paginate = await this.paginate(take, skip, newDetails);
 
-        return await this.paginate(take, skip, newDetails)
+        return [paginate, length];
     }
 
     async deleteDetailById(id: number) {
