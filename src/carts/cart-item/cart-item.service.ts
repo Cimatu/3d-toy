@@ -13,9 +13,9 @@ export class CartItemService {
         private readonly cartItemRepository: Repository<CartItem>,
     ) { }
 
-    async createCartItem(detail: Detail) {
-        const checkItem = this.getCartItemByDetailId(detail.id);
-        if(checkItem){
+    async createCartItem(detail: Detail, cartId: number) {
+        const checkItem = await this.getCartItemByDetailId(detail.id, cartId);
+        if (checkItem) {
             throw new HttpException("Cart item with such detail already exists", HttpStatus.FORBIDDEN);
         }
         const item = await this.cartItemRepository.create({ quantity: 1, total: detail.price, detail })
@@ -23,24 +23,36 @@ export class CartItemService {
         return await this.cartItemRepository.save(item);
     }
 
-    async addQuantity(id: number) {
-        const cartItem = await this.getCartItemById(id);
+    async addQuantity(detailId: number, cartId: number) {
+        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+        if (!cartItem) {
+            throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
+        }
         cartItem.quantity += 1;
+        cartItem.total += cartItem.detail.price;
         return await this.cartItemRepository.save(cartItem)
     }
 
-    async takeQuantity(id: number) {
-        const cartItem = await this.getCartItemById(id);
+    async takeQuantity(detailId: number, cartId: number) {
+        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+        if (!cartItem) {
+            throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
+        }
         if (cartItem.quantity == 1) {
-            return await this.deteleCartItem(id);
+            return await this.deteleCartItem(detailId, cartId);
         } else {
             cartItem.quantity -= 1;
+            cartItem.total += cartItem.detail.price;
             return await this.cartItemRepository.save(cartItem);
         }
     }
 
-    async deteleCartItem(id: number) {
-        return await this.cartItemRepository.delete(id);
+    async deteleCartItem(detailId: number, cartId: number) {
+        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+        if (!cartItem) {
+            throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
+        }
+        return await this.cartItemRepository.delete(cartItem.id);
     }
 
     async getCartItemById(id: number) {
@@ -51,7 +63,7 @@ export class CartItemService {
             .getOne();
     }
 
-    async getCartItemsByCartID(cartId: number) {
+    async getCartItemsByCartId(cartId: number) {
         return await this.cartItemRepository
             .createQueryBuilder('cartItem')
             .leftJoinAndSelect('cartItem.detail', 'detail')
@@ -59,11 +71,13 @@ export class CartItemService {
             .getMany();
     }
 
-    async getCartItemByDetailId(detailId: number){
-        return await this.cartItemRepository
+    async getCartItemByDetailId(detailId: number, cartId: number) {
+        const item = await this.cartItemRepository
             .createQueryBuilder('cartItem')
             .leftJoinAndSelect('cartItem.detail', 'detail')
             .where('cartItem.detailId = :detailId', { detailId })
+            .andWhere('cartItem.cartId = :cartId', { cartId })
             .getOne();
+        return item
     }
 }

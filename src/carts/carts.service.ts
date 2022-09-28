@@ -38,18 +38,17 @@ export class CartsService {
         const cartItems = await Promise.all(
             cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
         );
-
         for (let i = 0; i < detailsObjs.length; i++) {
             let flag = false;
             for (let j = 0; j < cartItems.length; j++) {
                 if (detailsObjs[i].id === cartItems[j].detail.id) {
-                    await this.cartItemService.addQuantity(cartItems[j].id);
+                    await this.cartItemService.addQuantity(cartItems[j].detail.id, cart.id);
                     flag = true;
                     break;
                 }
             }
             if (!flag) {
-                const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i]);
+                const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i], cart.id);
                 cart.cartItems = [...cart.cartItems, newCartItem];
             }
         }
@@ -69,7 +68,7 @@ export class CartsService {
         if (!detail) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
-        const newCartItem = await this.cartItemService.createCartItem(detail);
+        const newCartItem = await this.cartItemService.createCartItem(detail, cart.id);
         cart.cartItems = [...cart.cartItems, newCartItem];
         cart.total = await this.setTotal(cart);
         cart.quantity = await this.setQuatity(cart);
@@ -84,6 +83,7 @@ export class CartsService {
         }
         return total;
     }
+
     private async setQuatity(cart: Cart) {
         let quantity = 0;
         for (let i = 0; i < cart.cartItems.length; i++) {
@@ -93,14 +93,14 @@ export class CartsService {
     }
 
 
-    async deleteFromCart(userId: number, details: InterfaceDetail[]) {
+    async deleteFromCart(userId: number, details: number[]) {
         const cart = await this.getCartByUserId(userId)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
 
         const detailsObjs = await Promise.all(
-            details.map(async (el) => await this.detailsService.getDetailByName(el.name))
+            details.map(async (el) => await this.detailsService.getDetailById(el))
         );
         if (!detailsObjs.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
@@ -109,11 +109,10 @@ export class CartsService {
         const cartItems = await Promise.all(
             cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
         );
-
         for (let i = 0; i < detailsObjs.length; i++) {
             for (let j = 0; j < cartItems.length; j++) {
-                if (detailsObjs[i].id === cartItems[j].detail[0].id) {
-                    await this.cartItemService.deteleCartItem(cartItems[j].id);
+                if (detailsObjs[i].id === cartItems[j].detail.id) {
+                    await this.cartItemService.deteleCartItem(cartItems[j].id, cart.id);
                     break;
                 }
             }

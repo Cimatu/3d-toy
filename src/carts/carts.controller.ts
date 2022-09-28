@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CartsService } from './carts.service';
 import { Cart } from './carts.entity';
@@ -28,15 +28,15 @@ export class CartsController {
     @ApiOperation({ summary: 'Delete from cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
     @Delete('delete')
-    delete(@Body() body: { id: number, array: InterfaceDetail[] }) {
-        return this.cartService.deleteFromCart(body.id, body.array);
+    delete(@Body() dto: AddCarDto) {
+        return this.cartService.deleteFromCart(dto.userId, dto.detailsIds);
     }
 
     @ApiOperation({ summary: 'Get cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
     @Get('get_by_user_id')
-    getByUserId(@Body() body: { id: number }) {
-        return this.cartService.getCartByUserId(body.id);
+    getByUserId(@Query('userId') userId: number) {
+        return this.cartService.getCartByUserId(userId);
     }
 
     @ApiOperation({ summary: 'Get cart by user id' })
