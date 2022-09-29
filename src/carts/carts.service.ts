@@ -61,6 +61,7 @@ export class CartsService {
 
     async addToCart(userId: number, detailId: number) {
         const cart = await this.getCartByUserId(userId);
+        console.log(cart)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
