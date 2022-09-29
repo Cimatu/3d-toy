@@ -58,13 +58,15 @@ export class EventsService {
         let array = await Promise.all(
             events.map(async (event) => {
                 if (event.usersData.length == 0) {
-                    const userData = event.usersData
+                    const userData = event.usersData;
                     return { event, userData };
                 }
                 for (let i = 0; i < event.usersData.length; i++) {
                     if (event.usersData[i].userId == userId) {
-                        const userData = event.usersData[i]
+                        const userData = event.usersData[i];
                         return { event, userData };
+                    } else {
+                        return { event, userData: [] };
                     }
                 }
             })
