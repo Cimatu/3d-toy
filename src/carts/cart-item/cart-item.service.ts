@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Detail } from 'src/cars/details/deltails.entity';
 import { CartItem } from './cart-item.entity';
+import { CartsService } from '../carts.service';
+import { Cart } from '../carts.entity';
 
 
 @Injectable()
@@ -11,6 +13,8 @@ export class CartItemService {
     constructor(
         @InjectRepository(CartItem)
         private readonly cartItemRepository: Repository<CartItem>,
+        @InjectRepository(Cart)
+        private readonly cartRepository: Repository<Cart>,
     ) { }
 
     async createCartItem(detail: Detail, cartId: number) {
@@ -79,5 +83,19 @@ export class CartItemService {
             .andWhere('cartItem.cartId = :cartId', { cartId })
             .getOne();
         return item
+    }
+
+    async getCartItemsByUserId(userId: number) {
+        const cart = await this.cartRepository
+            .createQueryBuilder('carts')
+            .leftJoinAndSelect('carts.cartItems', 'cartItems')
+            .where('carts.userId = :userId', { userId })
+            .getOne();
+
+        return await this.cartItemRepository
+            .createQueryBuilder('cartItem')
+            .leftJoinAndSelect('cartItem.detail', 'detail')
+            .where('cartItem.cartId = :cartId', { cartId: cart.id })
+            .getMany();
     }
 }

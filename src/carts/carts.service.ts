@@ -122,11 +122,17 @@ export class CartsService {
     }
 
     async getCartByUserId(userId: number) {
-        return await this.cartRepository
+        const cart = await this.cartRepository
             .createQueryBuilder('carts')
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
             .where('carts.userId = :userId', { userId })
             .getOne();
+        let details = []
+        for (let i = 0; i < cart.cartItems.length; i++) {
+            details.push(cart.cartItems[i].detail)
+        }
+        console.log(details)
+        return cart;
     }
 
     async getCartById(id: number) {

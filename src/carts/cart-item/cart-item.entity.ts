@@ -21,7 +21,7 @@ export class CartItem {
 
     @ManyToOne(() => Cart, (cart) => cart.cartItems)
     @JoinColumn()
-    cart: Cart
+    cart: Cart;
 
     @ManyToOne(() => Order, (order) => order.cartItems, { onDelete: "CASCADE" })
     @JoinColumn()
@@ -31,4 +31,8 @@ export class CartItem {
     @ManyToOne(() => Detail)
     @JoinColumn()
     detail: Detail;
+
+    @ApiProperty({ example: 3, description: 'User id' })
+    @Column({ nullable: false })
+    detailId: number;
 }

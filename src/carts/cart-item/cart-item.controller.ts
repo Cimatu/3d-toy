@@ -38,4 +38,11 @@ export class CartItemController {
         return this.cartItemService.getCartItemByDetailId(detailId, cartId);
     }
 
+    @ApiOperation({ summary: 'Get cart items by user Id' })
+    @ApiResponse({ status: 200, type: [CartItem] })
+    @Get('get_cart-items_by_userId')
+    getCartItemsByUserId(@Query('userId') userId: number) {
+        return this.cartItemService.getCartItemsByUserId(userId);
+    }
+
 }
