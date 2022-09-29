@@ -18,8 +18,8 @@ export class CartsService {
         private cartItemService: CartItemService,
     ) { }
 
-    async createCart() {
-        return await this.cartRepository.save({});
+    async createCart(user: User) {
+        return await this.cartRepository.save({ user });
     }
 
     async addCarToCart(userId: number, detailsIds: number[]) {
@@ -61,7 +61,6 @@ export class CartsService {
 
     async addToCart(userId: number, detailId: number) {
         const cart = await this.getCartByUserId(userId);
-        console.log(cart)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }

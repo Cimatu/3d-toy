@@ -22,9 +22,6 @@ export class Cart {
     @JoinColumn()
     user: User;
 
-    // @Column()
-    // userId: number;
-
     @ApiProperty({ description: 'Array with all details in the cart' })
     @OneToMany(() => CartItem, cartItem => cartItem.cart)
     @JoinTable()

@@ -39,13 +39,12 @@ export class UsersService {
             throw new NotFoundException("Create user error");
         }
 
-        const cart = await this.cartService.createCart();
+        const cart = await this.cartService.createCart(user);
         if (!cart) {
             throw new NotFoundException("Cart wasn't created");
         }
 
-        user.cart = cart;
-        return await this.userRepository.save(user);
+        return await this.userRepository.save({...user, cart});
     }
 
     async getAllUsers() {
