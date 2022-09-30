@@ -27,7 +27,7 @@ export class CartsController {
 
     @ApiOperation({ summary: 'Delete from cart by user id' })
     @ApiResponse({ status: 200, type: Cart })
-    @Delete('delete')
+    @Post('delete')
     delete(@Body() dto: AddCarDto) {
         return this.cartService.deleteFromCart(dto.userId, dto.detailsIds);
     }
