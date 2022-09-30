@@ -37,11 +37,6 @@ export class TokenService {
         return await this.tokenRepository.save({ userId, refreshToken })
     }
 
-
-    async refresh(refreshToken: string) {
-
-    }
-
     async deleteToken(refreshToken: string) {
         const token = await this.getToken(refreshToken);
         if (!token) {

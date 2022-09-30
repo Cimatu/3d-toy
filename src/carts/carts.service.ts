@@ -28,27 +28,27 @@ export class CartsService {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
 
-        const detailsObjs = await Promise.all(
+        const details = await Promise.all(
             detailsIds.map(async (el) => await this.detailsService.getDetailById(el))
         );
 
-        if (!detailsObjs.length) {
+        if (!details.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
         const cartItems = await Promise.all(
             cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
         );
-        for (let i = 0; i < detailsObjs.length; i++) {
+        for (let i = 0; i < details.length; i++) {
             let flag = false;
             for (let j = 0; j < cartItems.length; j++) {
-                if (detailsObjs[i].id === cartItems[j].detail.id) {
+                if (details[i].id === cartItems[j].detail.id) {
                     await this.cartItemService.addQuantity(cartItems[j].detail.id, userId);
                     flag = true;
                     break;
                 }
             }
             if (!flag) {
-                const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i], userId);
+                const newCartItem = await this.cartItemService.createCartItem(details[i], userId);
                 cart.cartItems = [...cart.cartItems, newCartItem];
             }
         }
@@ -93,32 +93,33 @@ export class CartsService {
     }
 
 
-    async deleteFromCart(userId: number, details: number[]) {
-        const cart = await this.getCartByUserId(userId)
+    async deleteFromCart(userId: number, detailsIds: number[]) {
+        const cart = await this.getCartByUserId(userId);
+        console.log(cart)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
 
-        const detailsObjs = await Promise.all(
-            details.map(async (el) => await this.detailsService.getDetailById(el))
+        const details = await Promise.all(
+            detailsIds.map(async (el) => await this.detailsService.getDetailById(el))
         );
-        if (!detailsObjs.length) {
+        if (!details.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
 
         const cartItems = await Promise.all(
             cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
         );
-        for (let i = 0; i < detailsObjs.length; i++) {
+        for (let i = 0; i < details.length; i++) {
             for (let j = 0; j < cartItems.length; j++) {
-                if (detailsObjs[i].id === cartItems[j].detail.id) {
-                    await this.cartItemService.deteleCartItem(cartItems[j].id, userId);
+                if (details[i].id === cartItems[j].detail.id) {
+                    await this.cartItemService.deteleCartItem(cartItems[j].detail.id, userId);
                     break;
                 }
             }
         }
 
-        return await this.cartRepository.save(cart)
+        return await this.getCartByUserId(userId)
     }
 
     async getCartByUserId(userId: number) {
@@ -127,11 +128,7 @@ export class CartsService {
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
             .where('carts.userId = :userId', { userId })
             .getOne();
-        let details = []
-        for (let i = 0; i < cart.cartItems.length; i++) {
-            details.push(cart.cartItems[i].detail)
-        }
-        console.log(details)
+        console.log(cart)
         return cart;
     }
 

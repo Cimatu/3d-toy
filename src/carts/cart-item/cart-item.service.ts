@@ -41,8 +41,6 @@ export class CartItemService {
     }
 
     async takeQuantity(detailId: number, userId: number) {
-
-        const cart = await this.getCartByUserId(userId);
         const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
