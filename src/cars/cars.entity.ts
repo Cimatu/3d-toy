@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/users/users.entity";
-import { Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";;
+import { Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";;
 import { Detail } from "./details/deltails.entity";
 
 

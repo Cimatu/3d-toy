@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Detail } from 'src/cars/details/deltails.entity';
 import { CartItem } from './cart-item.entity';
-import { CartsService } from '../carts.service';
 import { Cart } from '../carts.entity';
 
 
@@ -17,8 +16,10 @@ export class CartItemService {
         private readonly cartRepository: Repository<Cart>,
     ) { }
 
-    async createCartItem(detail: Detail, cartId: number) {
-        const checkItem = await this.getCartItemByDetailId(detail.id, cartId);
+    async createCartItem(detail: Detail, userId: number) {
+        const cart = await this.getCartByUserId(userId);
+
+        const checkItem = await this.getCartItemByDetailAndUserId(detail.id, userId);
         if (checkItem) {
             throw new HttpException("Cart item with such detail already exists", HttpStatus.FORBIDDEN);
         }
@@ -27,8 +28,10 @@ export class CartItemService {
         return await this.cartItemRepository.save(item);
     }
 
-    async addQuantity(detailId: number, cartId: number) {
-        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+    async addQuantity(detailId: number, userId: number) {
+        const cart = await this.getCartByUserId(userId);
+
+        const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
@@ -37,13 +40,15 @@ export class CartItemService {
         return await this.cartItemRepository.save(cartItem)
     }
 
-    async takeQuantity(detailId: number, cartId: number) {
-        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+    async takeQuantity(detailId: number, userId: number) {
+
+        const cart = await this.getCartByUserId(userId);
+        const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
         if (cartItem.quantity == 1) {
-            return await this.deteleCartItem(detailId, cartId);
+            return await this.deteleCartItem(detailId, userId);
         } else {
             cartItem.quantity -= 1;
             cartItem.total += cartItem.detail.price;
@@ -51,8 +56,9 @@ export class CartItemService {
         }
     }
 
-    async deteleCartItem(detailId: number, cartId: number) {
-        const cartItem = await this.getCartItemByDetailId(detailId, cartId);
+    async deteleCartItem(detailId: number, userId: number) {
+        const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
+
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
@@ -75,27 +81,32 @@ export class CartItemService {
             .getMany();
     }
 
-    async getCartItemByDetailId(detailId: number, cartId: number) {
-        const item = await this.cartItemRepository
+    async getCartItemByDetailAndUserId(detailId: number, userId: number) {
+        const cart = await this.getCartByUserId(userId);
+
+        return await this.cartItemRepository
             .createQueryBuilder('cartItem')
             .leftJoinAndSelect('cartItem.detail', 'detail')
             .where('cartItem.detailId = :detailId', { detailId })
-            .andWhere('cartItem.cartId = :cartId', { cartId })
+            .andWhere('cartItem.cartId = :cartId', { cartId: cart.id })
             .getOne();
-        return item
     }
 
     async getCartItemsByUserId(userId: number) {
-        const cart = await this.cartRepository
-            .createQueryBuilder('carts')
-            .leftJoinAndSelect('carts.cartItems', 'cartItems')
-            .where('carts.userId = :userId', { userId })
-            .getOne();
+        const cart = await this.getCartByUserId(userId);
 
         return await this.cartItemRepository
             .createQueryBuilder('cartItem')
             .leftJoinAndSelect('cartItem.detail', 'detail')
             .where('cartItem.cartId = :cartId', { cartId: cart.id })
             .getMany();
+    }
+
+    private async getCartByUserId(userId: number) {
+        return await this.cartRepository
+            .createQueryBuilder('carts')
+            .leftJoinAndSelect('carts.cartItems', 'cartItems')
+            .where('carts.userId = :userId', { userId })
+            .getOne();
     }
 }

@@ -42,13 +42,13 @@ export class CartsService {
             let flag = false;
             for (let j = 0; j < cartItems.length; j++) {
                 if (detailsObjs[i].id === cartItems[j].detail.id) {
-                    await this.cartItemService.addQuantity(cartItems[j].detail.id, cart.id);
+                    await this.cartItemService.addQuantity(cartItems[j].detail.id, userId);
                     flag = true;
                     break;
                 }
             }
             if (!flag) {
-                const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i], cart.id);
+                const newCartItem = await this.cartItemService.createCartItem(detailsObjs[i], userId);
                 cart.cartItems = [...cart.cartItems, newCartItem];
             }
         }
@@ -68,7 +68,7 @@ export class CartsService {
         if (!detail) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
-        const newCartItem = await this.cartItemService.createCartItem(detail, cart.id);
+        const newCartItem = await this.cartItemService.createCartItem(detail, userId);
         cart.cartItems = [...cart.cartItems, newCartItem];
         cart.total = await this.setTotal(cart);
         cart.quantity = await this.setQuatity(cart);
@@ -112,7 +112,7 @@ export class CartsService {
         for (let i = 0; i < detailsObjs.length; i++) {
             for (let j = 0; j < cartItems.length; j++) {
                 if (detailsObjs[i].id === cartItems[j].detail.id) {
-                    await this.cartItemService.deteleCartItem(cartItems[j].id, cart.id);
+                    await this.cartItemService.deteleCartItem(cartItems[j].id, userId);
                     break;
                 }
             }

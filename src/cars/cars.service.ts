@@ -18,16 +18,19 @@ export class CarsService {
     ) { }
 
     async createCar(dto: CreateCarDto) {
-        const { username, details } = dto;
+        const { userId, detailsIds } = dto;
 
-        const user = await this.userService.getUserByUsername(username);
+        const user = await this.userService.getUserById(userId);
         if (!user) {
             throw new HttpException("User not found", HttpStatus.NOT_FOUND);
         }
 
+        const detailsObjs = await Promise.all(
+            detailsIds.map(async (el) => await this.detailsService.getDetailById(el))
+        )
         let checkBody = false;
-        for (let i = 0; i < details.length; i++) {
-            if (details[i].type === "BodyCar") {
+        for (let i = 0; i < detailsObjs.length; i++) {
+            if (detailsObjs[i].type.name == "CarBody") {
                 checkBody = true;
                 break;
             }
@@ -36,30 +39,27 @@ export class CarsService {
             throw new HttpException("Body not found", HttpStatus.NOT_FOUND);
         }
 
-        const detailsObjs = await Promise.all(
-            details.map(async (el) => await this.detailsService.getDetailByName(el.name))
-        )
         const car = await this.carRepository.create({ user, details: detailsObjs })
 
         return await this.carRepository.save(car);
     }
 
     async updateCar(dto: UpdateCarDto) {
-        const { carId, details } = dto;
+        const { carId, detailsIds } = dto;
 
         const car = await this.getCarById(carId);
         if (!car) {
             throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
         }
 
-        const detailsObjs = await Promise.all(
-            details.map(async (el) => await this.detailsService.getDetailByName(el.name))
-        );
-        if (!details.length) {
+        if (!detailsIds.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
+        const detailsObjs = await Promise.all(
+            detailsIds.map(async (el) => await this.detailsService.getDetailById(el))
+        );
         car.details = detailsObjs;
-
+            
         return await this.carRepository.save(car);
     }
 
@@ -83,8 +83,8 @@ export class CarsService {
         return car;
     }
 
-    async getAllCars(username: string) {
-        const user = await this.userService.getUserByUsername(username);
+    async getAllCars(id: number) {
+        const user = await this.userService.getUserById(id);
         if (!user) {
             throw new NotFoundException("User not found");
         }
@@ -92,7 +92,7 @@ export class CarsService {
             .createQueryBuilder('cars')
             .leftJoinAndSelect('cars.details', 'details')
             .leftJoin('cars.user', 'user')
-            .where('user.username = :username', { username })
+            .where('user.id = :id', { id })
             .getMany();
         if (!car) {
             throw new HttpException("Car not found", HttpStatus.NOT_FOUND);
