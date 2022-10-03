@@ -23,16 +23,18 @@ export class NewsService {
         if (!news) {
             throw new HttpException("News not found", HttpStatus.NOT_FOUND);
         }
-        if (name) {
-            news.name = name;
+
+        if (!name && !date && !text) {
+            throw new HttpException("No dto", HttpStatus.NOT_FOUND);
         }
-        if (text) {
-            news.text = text;
-        }
-        if (date) {
-            news.date = date;
-        }
-        return await this.newsRepository.save(news);
+
+        await this.newsRepository
+            .createQueryBuilder()
+            .update(News)
+            .set({ ...dto })
+            .where("id = :id", { id })
+            .execute();
+        return await this.getNewsById(id);
     }
 
     async deleteNewsById(id: number) {

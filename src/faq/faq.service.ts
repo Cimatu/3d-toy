@@ -18,32 +18,38 @@ export class FAQsService {
     }
 
     async updateFAQById(id: number, dto: CreateFaqDto) {
-        const faq = await this.getOneById(id)
+        const { name, text } = dto;
+
+        const faq = await this.getFAQById(id)
         if (!faq) {
             throw new HttpException("FAQ not found", HttpStatus.NOT_FOUND);
         }
-        if (dto.name) {
-            faq.name = dto.name;
+
+        if (!name && !text) {
+            throw new HttpException("No dto", HttpStatus.NOT_FOUND);
         }
 
-        if (dto.text) {
-            faq.text = dto.text;
-        }
-
-        return await this.faqRepository.save(faq)
+        await this.faqRepository
+            .createQueryBuilder()
+            .update(FAQ)
+            .set({ ...dto })
+            .where("id = :id", { id })
+            .execute();
+        return await this.getFAQById(id);
     }
 
     async deleteFAQById(id: number) {
-        let faq = await this.getOneById(id);
+        let faq = await this.getFAQById(id);
         if (!faq) {
             throw new HttpException("FAQ not found", HttpStatus.NOT_FOUND);
         }
+
         await this.faqRepository.delete(id);
-        faq = await this.getOneById(id);
-        if(!faq){
-            return {message: "FAQ was successfuly deleted"}
-        }else{
-            return {message: "FAQ wasn't deleted"}
+        faq = await this.getFAQById(id);
+        if (!faq) {
+            return { message: "FAQ was successfuly deleted" }
+        } else {
+            return { message: "FAQ wasn't deleted" }
         }
     }
 
@@ -53,7 +59,7 @@ export class FAQsService {
             .getMany();
     }
 
-    async getOneById(id: number) {
+    async getFAQById(id: number) {
         return await this.faqRepository
             .createQueryBuilder('faqs')
             .where('faqs.id = :id', { id })

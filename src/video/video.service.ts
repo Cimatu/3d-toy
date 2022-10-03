@@ -17,20 +17,24 @@ export class VideoService {
     }
 
     async updateVideoById(id: number, dto: CreateVideoDto) {
-        let video = await this.getVideoById(id);
+        const { name, url } = dto;
+
+        const video = await this.getVideoById(id);
         if (!video) {
             throw new HttpException("Video not found", HttpStatus.NOT_FOUND);
         }
 
-        if (dto.name) {
-            video.name = dto.name;
+        if (!name && !url) {
+            throw new HttpException("No dto", HttpStatus.NOT_FOUND);
         }
 
-        if (dto.url) {
-            video.url = dto.url;
-        }
-
-        return await this.videoRepository.save(video)
+        await this.videoRepository
+            .createQueryBuilder()
+            .update(Video)
+            .set({ ...dto })
+            .where("id = :id", { id })
+            .execute();
+        return await this.getVideoById(id);
     }
 
     async deleteVideoById(id: number) {
@@ -40,10 +44,10 @@ export class VideoService {
         }
         await this.videoRepository.delete(id);
         video = await this.getVideoById(id);
-        if(!video){
-            return {message: "Video was successfuly deleted"}
-        }else{
-            return {message: "Video wasn't deleted"}
+        if (!video) {
+            return { message: "Video was successfuly deleted" }
+        } else {
+            return { message: "Video wasn't deleted" }
         }
     }
 

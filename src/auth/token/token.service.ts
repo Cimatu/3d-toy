@@ -45,7 +45,6 @@ export class TokenService {
         return await this.tokenRepository.delete(token.id)
     }
 
-
     async deleteTokenByUser(refreshStr: string) {
         const token = await this.getToken(refreshStr);
         if (!token) {
@@ -53,7 +52,6 @@ export class TokenService {
         }
         return await this.tokenRepository.delete(token.id)
     }
-
 
     async getToken(refreshToken: string) {
         return await this.tokenRepository

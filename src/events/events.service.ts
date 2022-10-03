@@ -22,13 +22,13 @@ export class EventsService {
         if (!event) {
             throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
         }
+
         await this.eventsRepository
             .createQueryBuilder()
             .update(Event)
             .set({ ...dto })
             .where("id = :id", { id })
             .execute();
-
         return await this.getEventById(id)
     }
 
@@ -62,12 +62,8 @@ export class EventsService {
                     return { event, userData };
                 }
                 for (let i = 0; i < event.usersData.length; i++) {
-                    if (event.usersData[i].userId == userId) {
-                        const userData = event.usersData[i];
-                        return { event, userData };
-                    } else {
-                        return { event, userData: [] };
-                    }
+                    const userData = event.usersData[i];
+                    return { event, userData };
                 }
             })
         )

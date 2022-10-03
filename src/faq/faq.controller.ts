@@ -48,6 +48,6 @@ export class FAQsController {
     @ApiResponse({ status: 200, type: FAQ })
     @Get('get_one/:id')
     getOne(@Param('id') id: number) {
-        return this.faqService.getOneById(id);
+        return this.faqService.getFAQById(id);
     }
 }
