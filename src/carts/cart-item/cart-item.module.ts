@@ -6,6 +6,7 @@ import { CartItem } from './cart-item.entity';
 import { Detail } from 'src/cars/details/deltails.entity';
 import { Order } from 'src/orders/orders.entity';
 import { Cart } from '../carts.entity';
+import CartsModule from '../carts.module';
 
 
 @Module({

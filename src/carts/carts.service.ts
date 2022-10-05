@@ -35,25 +35,23 @@ export class CartsService {
         if (!details.length) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
-        const cartItems = await Promise.all(
-            cart.cartItems.map(async (el) => await this.cartItemService.getCartItemById(el.id))
-        );
         for (let i = 0; i < details.length; i++) {
             let flag = false;
-            for (let j = 0; j < cartItems.length; j++) {
-                if (details[i].id === cartItems[j].detail.id) {
-                    await this.cartItemService.addQuantity(cartItems[j].detail.id, userId);
+            for (let j = 0; j < cart.cartItems.length; j++) {
+                if (details[i].id === cart.cartItems[j].detailId) {
+                    await this.cartItemService.addQuantity(cart.cartItems[j].detailId, userId);
                     flag = true;
                     break;
                 }
             }
             if (!flag) {
-                const newCartItem = await this.cartItemService.createCartItem(details[i], userId);
+                const newCartItem = await this.cartItemService.createCartItem(details[i]);
                 cart.cartItems = [...cart.cartItems, newCartItem];
+                await this.cartRepository.save(cart);
             }
         }
-        cart.total = await this.setTotal(cart);
-        cart.quantity = await this.setQuatity(cart);
+        cart.total = await this.cartItemService.setTotal(userId);
+        cart.quantity = await this.cartItemService.setQuatity(userId);
         await this.cartRepository.save(cart);
 
         return await this.getCartById(cart.id);
@@ -68,34 +66,30 @@ export class CartsService {
         if (!detail) {
             throw new HttpException("No changes", HttpStatus.NOT_FOUND);
         }
-        const newCartItem = await this.cartItemService.createCartItem(detail, userId);
-        cart.cartItems = [...cart.cartItems, newCartItem];
-        cart.total = await this.setTotal(cart);
-        cart.quantity = await this.setQuatity(cart);
 
-        return await this.cartRepository.save(cart);
-    }
-
-    private async setTotal(cart: Cart) {
-        let total = 0;
-        for (let i = 0; i < cart.cartItems.length; i++) {
-            total += cart.cartItems[i].total;
+        let cartItems = cart.cartItems;
+        let flag = false;
+        for (let i = 0; i < cartItems.length; i++) {
+            if (detail.id === cartItems[i].detailId) {
+                await this.cartItemService.addQuantity(cartItems[i].detailId, userId);
+                flag = true;
+                break;
+            }
         }
-        return total;
-    }
-
-    private async setQuatity(cart: Cart) {
-        let quantity = 0;
-        for (let i = 0; i < cart.cartItems.length; i++) {
-            quantity += cart.cartItems[i].quantity;
+        if (!flag) {
+            const newCartItem = await this.cartItemService.createCartItem(detail);
+            cart.cartItems = [...cart.cartItems, newCartItem];
+            await this.cartRepository.save(cart);
         }
-        return quantity;
-    }
+        cart.total = await this.cartItemService.setTotal(userId);
+        cart.quantity = await this.cartItemService.setQuatity(userId);
 
+        await this.cartRepository.save(cart);
+        return await this.getCartById(cart.id);
+    }
 
     async deleteFromCart(userId: number, detailsIds: number[]) {
         const cart = await this.getCartByUserId(userId);
-        console.log(cart)
         if (!cart) {
             throw new HttpException("Cart not found", HttpStatus.NOT_FOUND);
         }
@@ -128,7 +122,6 @@ export class CartsService {
             .leftJoinAndSelect('carts.cartItems', 'cartItems')
             .where('carts.userId = :userId', { userId })
             .getOne();
-        console.log(cart)
         return cart;
     }
 

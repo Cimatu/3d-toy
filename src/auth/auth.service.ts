@@ -63,7 +63,6 @@ export class AuthService {
 
     async restorePassword(email: string, link: string) {
         link = link || 'https://cars-3d.herokuapp.com/restore-password';
-        console.log(link)
         const user = await this.userService.getUserByEmail(email);
         if (!user) {
             throw new HttpException('User with such email not found', HttpStatus.BAD_REQUEST);
@@ -75,7 +74,6 @@ export class AuthService {
         const secret = process.env.JWT_ACCESS_SECRET + user.password;
         const token = await this.tokenService.generateLink(payload, secret)
         const recoverLink = `${link}/${user.id}/${token}`;
-        console.log(recoverLink)
         return await this.sendRecoveryEmail(email, recoverLink)
     }
 

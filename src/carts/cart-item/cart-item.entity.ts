@@ -25,7 +25,7 @@ export class CartItem {
 
     @ManyToOne(() => Order, (order) => order.cartItems, { onDelete: "CASCADE" })
     @JoinColumn()
-    order: Order
+    order: Order;
 
     @ApiProperty({ description: 'Array with all details in the cart' })
     @ManyToOne(() => Detail)

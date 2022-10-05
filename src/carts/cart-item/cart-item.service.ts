@@ -16,28 +16,20 @@ export class CartItemService {
         private readonly cartRepository: Repository<Cart>,
     ) { }
 
-    async createCartItem(detail: Detail, userId: number) {
-        const cart = await this.getCartByUserId(userId);
-
-        const checkItem = await this.getCartItemByDetailAndUserId(detail.id, userId);
-        if (checkItem) {
-            throw new HttpException("Cart item with such detail already exists", HttpStatus.FORBIDDEN);
-        }
-        const item = await this.cartItemRepository.create({ quantity: 1, total: detail.price, detail })
-
+    async createCartItem(detail: Detail) {
+        const item = await this.cartItemRepository.create({ quantity: 1, total: detail.price, detail });
         return await this.cartItemRepository.save(item);
     }
 
     async addQuantity(detailId: number, userId: number) {
-        const cart = await this.getCartByUserId(userId);
-
         const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
+
         cartItem.quantity += 1;
         cartItem.total += cartItem.detail.price;
-        return await this.cartItemRepository.save(cartItem)
+        return await this.cartItemRepository.save(cartItem);
     }
 
     async takeQuantity(detailId: number, userId: number) {
@@ -52,6 +44,24 @@ export class CartItemService {
             cartItem.total += cartItem.detail.price;
             return await this.cartItemRepository.save(cartItem);
         }
+    }
+
+    async setTotal(userId: number) {
+        const cartItems = await this.getCartItemsByUserId(userId);
+        let total = 0;
+        for (let i = 0; i < cartItems.length; i++) {
+            total += cartItems[i].total;
+        }
+        return total;
+    }
+
+    async setQuatity(userId: number) {
+        const cartItems = await this.getCartItemsByUserId(userId);
+        let quantity = 0;
+        for (let i = 0; i < cartItems.length; i++) {
+            quantity += cartItems[i].quantity;
+        }
+        return quantity;
     }
 
     async deteleCartItem(detailId: number, userId: number) {

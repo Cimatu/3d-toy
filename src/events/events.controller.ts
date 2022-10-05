@@ -50,7 +50,7 @@ export class EventController {
     @Get('get_all_events_by/:userId')
     getAllEventsWithUserId(@Param('userId') userId: number) {
         return this.eventsService.getAllEventsWithUserId(userId);
-    }
+    }   
 
     @ApiOperation({ summary: 'Get one single event by its id' })
     @ApiResponse({ status: 200, type: Event })
