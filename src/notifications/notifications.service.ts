@@ -52,7 +52,6 @@ export class NotificationsService {
         }
     }
 
-
     async getAllNotifications() {
         return await this.notificationRepository
             .createQueryBuilder('notifications')
