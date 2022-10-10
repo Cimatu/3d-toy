@@ -28,6 +28,8 @@ import { Type } from './cars/details/types/types.entity';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './auth/token/token.module';
 import Token from './auth/token/token.entity';
+import NotificationsModule from './notifications/notifications.module';
+import { Notification } from './notifications/notifications.entity';
 
 @Module({
   controllers: [],
@@ -43,9 +45,9 @@ import Token from './auth/token/token.entity';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, Video, News, Type, Token],
+      entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, Video, News, Type, Token, Notification],
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
+      // ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,
@@ -60,7 +62,8 @@ import Token from './auth/token/token.entity';
     NewsModule,
     TypesModule,
     AuthModule,
-    TokenModule
+    TokenModule,
+    NotificationsModule
   ],
 })
 export class AppModule { }

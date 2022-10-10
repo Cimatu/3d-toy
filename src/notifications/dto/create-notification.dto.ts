@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+
 export class CreateNotificationDto {
     @ApiProperty({example: 'destroyer3000', description: 'Unique username'})
     name: string;
@@ -8,5 +9,5 @@ export class CreateNotificationDto {
     text: string;
 
     @ApiProperty({example: 'destroyer3000', description: 'Unique username'})
-    date: Date
+    date: Date;
 }

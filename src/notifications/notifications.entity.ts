@@ -2,21 +2,21 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGen
 import { ApiProperty } from "@nestjs/swagger";
 
 
-@Entity('botifications')
+@Entity('notifications')
 export class Notification {
     @ApiProperty({ example: 1, description: 'Unique identificator' })
     @PrimaryGeneratedColumn()
     id: number;
 
     @ApiProperty({ example: 50, description: 'Price of all parts of the car in order' })
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
-    @ApiProperty({example: 'Taiwan', description: "Country to deliver the order"})
-    @Column()
+    @ApiProperty({ example: 'Taiwan', description: "Country to deliver the order" })
+    @Column({ nullable: false })
     text: string;
 
-    @ApiProperty({example: 'Taibei', description: "City to deliver the order"})
-    @Column()
+    @ApiProperty({ example: 'Taibei', description: "City to deliver the order" })
+    @Column({ nullable: false })
     date: Date;
 }

@@ -68,21 +68,18 @@ export class CartsService {
         }
 
         let cartItems = cart.cartItems;
-        let flag = false;
         for (let i = 0; i < cartItems.length; i++) {
             if (detail.id === cartItems[i].detailId) {
                 await this.cartItemService.addQuantity(cartItems[i].detailId, userId);
-                flag = true;
-                break;
+                return await this.cartItemService.addQuantityToCart(userId, cartItems[i].detailId)
             }
         }
-        if (!flag) {
-            const newCartItem = await this.cartItemService.createCartItem(detail);
-            cart.cartItems = [...cart.cartItems, newCartItem];
-            await this.cartRepository.save(cart);
-        }
+        const newCartItem = await this.cartItemService.createCartItem(detail);
+        cart.cartItems = [...cart.cartItems, newCartItem];
+        await this.cartRepository.save(cart);
         cart.total = await this.cartItemService.setTotal(userId);
         cart.quantity = await this.cartItemService.setQuatity(userId);
+
 
         await this.cartRepository.save(cart);
         return await this.getCartById(cart.id);

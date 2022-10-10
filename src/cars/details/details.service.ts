@@ -47,7 +47,7 @@ export class DetailsService {
             throw new HttpException("Detail with such name already exists", HttpStatus.FORBIDDEN);
         }
 
-        const newDto = { name, price, color, dimmensions, img, note }
+        const newDto = { name, price, color, dimmensions, img, note };
         let detailType = detail.type;
         if (typeId) {
             const checkType = await this.typesService.getTypeById(typeId);

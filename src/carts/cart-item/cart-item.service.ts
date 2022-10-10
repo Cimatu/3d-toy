@@ -26,10 +26,23 @@ export class CartItemService {
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
-
         cartItem.quantity += 1;
         cartItem.total += cartItem.detail.price;
         return await this.cartItemRepository.save(cartItem);
+    }
+
+    async addQuantityToCart(userId: number, detailId: number) {
+        const cartItem = await this.getCartItemByDetailAndUserId(detailId, userId);
+        let cart = await this.getCartByUserId(userId);
+        const quantity = cart.quantity + 1;
+        const total = cart.total + cartItem.detail.price;
+        await this.cartRepository
+            .createQueryBuilder()
+            .update(Cart)
+            .set({ quantity, total })
+            .where("id = :id", { id: cart.id })
+            .execute();
+        return await this.getCartByUserId(userId);
     }
 
     async takeQuantity(detailId: number, userId: number) {
@@ -37,6 +50,8 @@ export class CartItemService {
         if (!cartItem) {
             throw new HttpException("No such cart item", HttpStatus.NOT_FOUND);
         }
+        await this.takeQuantityFromCart(userId, cartItem.detail.price);
+
         if (cartItem.quantity == 1) {
             return await this.deteleCartItem(detailId, userId);
         } else {
@@ -44,6 +59,13 @@ export class CartItemService {
             cartItem.total += cartItem.detail.price;
             return await this.cartItemRepository.save(cartItem);
         }
+    }
+
+    async takeQuantityFromCart(userId, price) {
+        const cart = await this.getCartByUserId(userId);
+        cart.quantity -= 1;
+        cart.total -= price;
+        return await this.cartRepository.save(cart);
     }
 
     async setTotal(userId: number) {
