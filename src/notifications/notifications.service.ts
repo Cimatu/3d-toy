@@ -59,9 +59,10 @@ export class NotificationsService {
     }
 
     async getNotificationsById(id: number) {
+        console.log(1)
         return await this.notificationRepository
             .createQueryBuilder('notifications')
-            .where('notiications.id = :id', { id })
+            .where('notifications.id = :id', { id })
             .getOne();
     }
 }
