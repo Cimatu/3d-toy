@@ -68,7 +68,12 @@ export class NotificationsService {
     async getUnseenNotifications(userId: number) {
         const notifications = await this.getAllNotifications();
 
-        return notifications.filter((el) => el.users.find(item => item.id == userId))
+        return notifications.filter((el) => {
+            const seen = el.users.find((item) => item.id == userId);
+            if (!seen) {
+                return el;
+            }
+        })
     }
 
     async deleteNotificationById(id: number) {

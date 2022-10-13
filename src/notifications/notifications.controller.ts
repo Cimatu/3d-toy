@@ -55,7 +55,7 @@ export class NotificationsController {
     }
 
     @ApiOperation({ summary: 'Get unseen notifications by user Id' })
-    @ApiResponse({ status: 200, type: Notification })
+    @ApiResponse({ status: 200, type: [Notification] })
     @Get('get_unseen/:userId')
     getUnseenNotifications(@Param('userId') userId: number) {
         return this.notificationsService.getUnseenNotifications(userId);
