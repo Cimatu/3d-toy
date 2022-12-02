@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { DetailsService } from 'src/cars/details/details.service';
 import { CartItemService } from './cart-item/cart-item.service';
 import { Cart } from './carts.entity';
-import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/users.entity';
 
 

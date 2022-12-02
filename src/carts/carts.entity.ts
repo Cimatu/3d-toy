@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGene
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/users/users.entity";
 import { CartItem } from "./cart-item/cart-item.entity";
+import { Car } from "src/cars/cars.entity";
 
 
 @Entity('carts')
@@ -26,4 +27,7 @@ export class Cart {
     @OneToMany(() => CartItem, cartItem => cartItem.cart)
     @JoinTable()
     cartItems: CartItem[];
+
+    @OneToMany(() => Car, car => car.cart)
+    cars: Car[]
 }

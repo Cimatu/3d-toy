@@ -47,7 +47,7 @@ import { Notification } from './notifications/notifications.entity';
       database: process.env.POSTGRES_DATABASE,
       entities: [User, Car, Cart, CartItem, Order, Event, UserData, FAQ, Detail, Video, News, Type, Token, Notification],
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
+      // ssl: { rejectUnauthorized: false },
     }),
     UsersModule,
     CarsModule,

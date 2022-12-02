@@ -21,7 +21,7 @@ export class UsersService {
         return await this.userRepository.save(admin);
     }
 
-    async updateEmail(dto: {email: string, id: number}){
+    async updateEmail(dto: { email: string, id: number }) {
         const user = await this.getUserById(dto.id);
         user.email = dto.email;
         return await this.userRepository.save(user);
@@ -44,7 +44,7 @@ export class UsersService {
             throw new NotFoundException("Cart wasn't created");
         }
 
-        return await this.userRepository.save({...user, cart});
+        return await this.userRepository.save({ ...user, cart });
     }
 
     async getAllUsers() {
@@ -86,7 +86,7 @@ export class UsersService {
         return user;
     }
 
-    async updatePassword(email, password) {
+    async updatePassword(email: string, password: string) {
         return await this.userRepository
             .createQueryBuilder()
             .update(User)

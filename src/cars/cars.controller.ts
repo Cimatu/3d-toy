@@ -46,4 +46,3 @@ export class CarsController {
         return this.carsService.deleteCar(car_id)
     }
 }
-

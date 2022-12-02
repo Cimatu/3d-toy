@@ -21,7 +21,7 @@ export class AuthService {
     constructor(
         private tokenService: TokenService,
         private userService: UsersService,
-    ) { }
+    ) { } 
 
     async signUp(userDto: SignDto) {
         const candidate = await this.userService.getUserByEmail(userDto.email);
